@@ -23,7 +23,7 @@ void CBall::Init()
 	m_pShader3D->Init("vertexShader3D.cso", "pixelShader3D.cso");
 
 	m_pModel = new CModel();
-	m_pModel->Load("data/MODEL/miku_01.obj");
+	m_pModel->Load("data/MODEL/field_sphere.obj");
 
 	m_Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);

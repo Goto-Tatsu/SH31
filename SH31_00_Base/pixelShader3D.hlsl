@@ -28,21 +28,22 @@ float4 main(PS_IN input) : SV_TARGET
 	//float light = dot(-normalize(lightDir), input.normalW);
 	//light = saturate(light);
 
+	// 平行光の明るさ
 	float light = (dot(-normalize(lightDir), input.normalW) + 1.0f) * 0.5f;
 	/////////////////////////////////////////////////
 
-	/* スペキュラー計算 */
-	float4 posWorld = mul(input.posW, mtxWorld);			// 物体のWorld座標
-	float3 refv = reflect(lightDir, input.normalW);	// ライトベクトル
-	float3 eyev = posWorld.xyz - cameraPos.xyz;			// 視線ベクトル
+	//// スペキュラー ////
+	float4 posWorld = mul(input.posW, mtxWorld);		// 物体のWorld座標
+	float3 refv = reflect(lightDir, input.normalW);		// ライトベクトル
+	float3 eyev = cameraPos.xyz - posWorld.xyz;			// 視線ベクトル
 	refv = normalize(refv);		// ノーマライズ
 	eyev = normalize(eyev);		// ノーマライズ
-	float s = dot(refv, eyev);	// スペキュラー設定
+	float s = -dot(refv, eyev);	// スペキュラー設定
 	s = saturate(s);
 	s = pow(s, 10);
 	float4 specular = float4(s, s, s, 1.0f);
 
 
-	return g_Texture.Sample(g_Sampler, input.texcoord) * light + specular;
+	return float4(g_Texture.Sample(g_Sampler, input.texcoord).rgb * light + specular, 1.0f);
 	//return float4(1.0f, 1.0f, 1.0f, 1.0f);
 }

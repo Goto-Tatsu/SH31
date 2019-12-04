@@ -140,7 +140,7 @@ void CShader3D::Set()
 	DirectX::XMStoreFloat4x4(&mtxWorld, world);
 	m_Constant3D.mtxWorld = mtxWorld;
 
-	m_Constant3D.cameraPos = XMFLOAT4(m_Camera->GetPosition().x, m_Camera->GetPosition().y, m_Camera->GetPosition().z, 0.0f);
+	m_Constant3D.cameraPos = XMFLOAT4(m_Camera->GetPosition().x, m_Camera->GetPosition().y, m_Camera->GetPosition().z, 1.0f);
 
 	// シェーダ設定
 	CRenderer::GetDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);

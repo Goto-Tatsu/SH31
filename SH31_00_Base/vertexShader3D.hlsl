@@ -26,14 +26,14 @@ struct VS_OUT {
 
 void main(in VS_IN input, out VS_OUT output)
 {
-	input.normal.w = 0.0f;
-	output.normalW = mul(input.normal, mtxWIT).xyz;
 
 	output.pos = mul(input.pos, mtxWVP);
+	input.normal.w = 0.0f;
 	output.color = input.color;
 	output.texcoord = input.texcoord;
 
 	output.posW = mul(input.pos, world);
+	output.normalW = mul(input.normal, mtxWIT).xyz;
 
 	// ライトカラー設定もCPUから送ってくるものだからね。
 	// alpha値のところは１入れといてあげてね、あんしん。
