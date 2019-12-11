@@ -35,10 +35,10 @@ void CShader3D::Init(const char* VertexShader, const char* PixelShader)
 		{
 			D3D11_INPUT_ELEMENT_DESC layout[] =
 			{
-				{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-				{ "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 4 * 3, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-				{ "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 4 * 6, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-				{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 4 * 10, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+				{ "POSITION",	0,	DXGI_FORMAT_R32G32B32_FLOAT,		0,	0,			D3D11_INPUT_PER_VERTEX_DATA, 0 },
+				{ "NORMAL",		0,	DXGI_FORMAT_R32G32B32_FLOAT,		0,	4 * 3,		D3D11_INPUT_PER_VERTEX_DATA, 0 },
+				{ "COLOR",		0,	DXGI_FORMAT_R32G32B32A32_FLOAT,		0,	4 * 6,		D3D11_INPUT_PER_VERTEX_DATA, 0 },
+				{ "TEXCOORD",	0,	DXGI_FORMAT_R32G32_FLOAT,			0,	4 * 10,		D3D11_INPUT_PER_VERTEX_DATA, 0 }
 			};
 
 			UINT numElements = ARRAYSIZE(layout);
@@ -104,44 +104,6 @@ void CShader3D::Uninit()
 
 void CShader3D::Set()
 {
-	/////////////////////////////////////////////////////////
-	// ボールに対して直ではいってるから要改良
-	m_Camera = CManager::GetScene()->GetGameObject<CCamera>(LAYER_CAMERA);
-	m_Ball = CManager::GetScene()->GetGameObject<CBall>(LAYER_3DMODELS);
-
-	XMMATRIX world, view, proj, WVP;
-	world = m_Ball->GetWorldMatrix();		// Tranpose済み
-	view = m_Camera->GetViewMatrix();		// Tranposeしてない！
-	proj = m_Camera->GetProjectionMatrix();	// Tranposeしてない！
-
-	WVP = world * view * proj;
-	
-	XMFLOAT4X4 mtxWVP;
-	DirectX::XMStoreFloat4x4(&mtxWVP, WVP);
-	m_Constant3D.mtxWVP = mtxWVP;
-	SetWorldViewProjectionMatrix(&mtxWVP);
-	////////////////////////////////////////////////////////
-
-
-	//////////////////////////////////////////////////////
-	// ワールド変換行列逆行列
-	XMMATRIX mtxWIT;
-	mtxWIT = XMMatrixInverse(nullptr, world);	// 逆行列
-	mtxWIT = XMMatrixTranspose(mtxWIT);			// 転置
-	XMFLOAT4X4 witf;
-	DirectX::XMStoreFloat4x4(&witf, mtxWIT);
-	m_Constant3D.mtxWIP = witf;
-	SetWorldInverseTranspose(&witf);
-	// このあとシェーダーレジスターにセットスル。
-	///////////////////////////////////////////////////////
-
-
-	XMFLOAT4X4 mtxWorld;
-	DirectX::XMStoreFloat4x4(&mtxWorld, world);
-	m_Constant3D.mtxWorld = mtxWorld;
-
-	m_Constant3D.cameraPos = XMFLOAT4(m_Camera->GetPosition().x, m_Camera->GetPosition().y, m_Camera->GetPosition().z, 1.0f);
-
 	// シェーダ設定
 	CRenderer::GetDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
 	CRenderer::GetDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
@@ -156,7 +118,7 @@ void CShader3D::Set()
 
 
 	// 定数バッファ設定
-	CRenderer::GetDeviceContext()->VSSetConstantBuffers(1, 1, &m_ConstantBuffer);
+	CRenderer::GetDeviceContext()->VSSetConstantBuffers(0, 1, &m_ConstantBuffer);
 
-	CRenderer::GetDeviceContext()->PSSetConstantBuffers(1, 1, &m_ConstantBuffer);
+	CRenderer::GetDeviceContext()->PSSetConstantBuffers(0, 1, &m_ConstantBuffer);
 }

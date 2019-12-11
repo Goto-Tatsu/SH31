@@ -23,9 +23,9 @@ void CBall::Init()
 	m_pShader3D->Init("vertexShader3D.cso", "pixelShader3D.cso");
 
 	m_pModel = new CModel();
-	m_pModel->Load("data/MODEL/field_sphere.obj");
+	m_pModel->Load("data/MODEL/sphere.obj");
 
-	m_Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_Position = XMFLOAT3(0.0f, 3.0f, 0.0f);
 	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
 
@@ -104,6 +104,36 @@ void CBall::Draw()
 	m_World *= XMMatrixRotationQuaternion(m_Quaternion);
 	m_World *= XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
 	CRenderer::SetWorldMatrix(&m_World);
+
+	m_pCamera = CManager::GetScene()->GetGameObject<CCamera>(LAYER_CAMERA);
+	XMMATRIX world, view, proj, WVP;
+	world = m_World;
+	view = m_pCamera->GetViewMatrix();			// Tranposeしてない！
+	proj = m_pCamera->GetProjectionMatrix();	// Tranposeしてない！
+	WVP = m_World * view * proj;
+
+	XMFLOAT4X4 mtxWVP;
+	DirectX::XMStoreFloat4x4(&mtxWVP, WVP);
+	m_pShader3D->SetWorldViewProjectionMatrix(&mtxWVP);
+
+	//////////////////////////////////////////////////////
+// ワールド変換行列逆行列
+	XMMATRIX mtxWIT;
+	mtxWIT = XMMatrixInverse(nullptr, m_World);	// 逆行列
+	mtxWIT = XMMatrixTranspose(mtxWIT);			// 転置
+	XMFLOAT4X4 witf;
+	DirectX::XMStoreFloat4x4(&witf, mtxWIT);
+	m_pShader3D->SetWorldInverseTranspose(&witf);
+	// このあとシェーダーレジスターにセットスル。
+	///////////////////////////////////////////////////////
+
+	XMFLOAT4X4 mtxWorld;
+	DirectX::XMStoreFloat4x4(&mtxWorld, world);
+	m_pShader3D->SetWorldTranspose(&mtxWorld);
+	m_pShader3D->GetCameraPos(m_pCamera->GetPosition());
+
+	m_pShader3D->Set();
+
 
 	// モデル描画
 	m_pModel->Draw();

@@ -3,9 +3,6 @@
 #include "main.h"
 #include "renderer.h"
 
-
-
-
 class CTexture
 {
 

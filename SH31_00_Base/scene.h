@@ -8,14 +8,15 @@
 
 #include "polygon.h"
 #include "camera.h"
+#include "field.h"
 #include "ball.h"
 
 enum LAYER
 {
-	LAYER_CAMERA,	// カメラレイヤー
-	LAYER_BG,		// 背景(BackGround)レイヤー
-	LAYER_3DMODELS,	// 3Dモデルレイヤー
-	LAYER_EFFECTS,	// Effectsレイヤー
+	LAYER_CAMERA,		// カメラレイヤー
+	LAYER_BG,			// 背景(BackGround)レイヤー
+	LAYER_3D,			// 3Dモデルレイヤー
+	LAYER_EFFECTS,		// Effectsレイヤー
 	LAYER_2DPOLYGONS,	// 2Dポリゴンレイヤー
 
 	LAYER_MAX
@@ -39,7 +40,8 @@ public:
 		AddGameObject<CCamera>(LAYER_CAMERA);
 
 		// 3DObjects
-		AddGameObject<CBall>(LAYER_3DMODELS);
+		AddGameObject<CField>(LAYER_BG);
+		AddGameObject<CBall>(LAYER_3D);
 
 		// Polygon
 		AddGameObject<CPolygon>(LAYER_2DPOLYGONS);

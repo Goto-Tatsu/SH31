@@ -437,6 +437,34 @@ void CRenderer::SetTexture(CTexture* Texture)
 
 }
 
+void CRenderer::SetTexture(UINT slot, CTexture* Texture)
+{
+
+	ID3D11ShaderResourceView* srv[1] = { Texture->GetShaderResourceView() };
+	m_ImmediateContext->PSSetShaderResources(slot, 1, srv);
+
+}
+
+void CRenderer::SetTexture(UINT numTextures, CTexture** Texture)
+{
+	ID3D11ShaderResourceView** srv = new ID3D11ShaderResourceView * [numTextures];
+	for (int i = 0; i < numTextures; i++) {
+		srv[i] = Texture[i]->GetShaderResourceView();
+	}
+	m_ImmediateContext->PSGetShaderResources(0, numTextures, srv);
+	delete[] srv;
+}
+
+void CRenderer::SetTexture(UINT slot, CTexture** Texture, UINT numTextures)
+{
+	ID3D11ShaderResourceView** srv = new ID3D11ShaderResourceView*[numTextures];
+	for (int i = 0; i < numTextures; i++) {
+		srv[i] = Texture[i]->GetShaderResourceView();
+	}
+	m_ImmediateContext->PSGetShaderResources(slot, numTextures, srv);
+	delete[] srv;
+}
+
 
 void CRenderer::DrawIndexed(unsigned int IndexCount, unsigned int StartIndexLocation, int BaseVertexLocation)
 {

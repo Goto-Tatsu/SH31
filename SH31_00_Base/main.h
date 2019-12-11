@@ -17,14 +17,14 @@ using namespace DirectX;
 
 /* ====== ASSIMP =================== */
 #pragma comment(lib, "assimp.lib")
-#include <assimp/cimport.h>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
-#include <assimp/matrix4x4.h>
+// #include <assimp/cimport.h>
+// #include <assimp/scene.h>
+// #include <assimp/postprocess.h>
+// #include <assimp/matrix4x4.h>
 /* ================================ */
 
-#define SCREEN_WIDTH	(960)			// ウインドウの幅
-#define SCREEN_HEIGHT	(540)			// ウインドウの高さ
+#define SCREEN_WIDTH	(1920)			// ウインドウの幅
+#define SCREEN_HEIGHT	(1080)			// ウインドウの高さ
 
 
 HWND GetWindow();

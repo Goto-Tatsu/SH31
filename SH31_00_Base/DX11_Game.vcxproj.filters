@@ -74,11 +74,14 @@
     <ClCompile Include="ball.cpp">
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
+    <ClCompile Include="field.cpp">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClCompile>
+    <ClCompile Include="shader3D_NormalMap.cpp">
+      <Filter>ソース ファイル\shader\3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="main.h">
-      <Filter>ソース ファイル\system</Filter>
-    </ClInclude>
     <ClInclude Include="manager.h">
       <Filter>ソース ファイル\system</Filter>
     </ClInclude>
@@ -93,9 +96,6 @@
     </ClInclude>
     <ClInclude Include="game_object.h">
       <Filter>ソース ファイル\game_object</Filter>
-    </ClInclude>
-    <ClInclude Include="scene.h">
-      <Filter>ソース ファイル\scene</Filter>
     </ClInclude>
     <ClInclude Include="input.h">
       <Filter>ソース ファイル\system</Filter>
@@ -115,9 +115,22 @@
     <ClInclude Include="ball.h">
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
+    <ClInclude Include="field.h">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>ソース ファイル\system</Filter>
+    </ClInclude>
+    <ClInclude Include="shader3D_NormalMap.h">
+      <Filter>ソース ファイル\shader\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="scene.h">
+      <Filter>ソース ファイル\scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="pixelShader2D.hlsl">
@@ -130,6 +143,12 @@
       <Filter>ソース ファイル\HLSL\3D</Filter>
     </FxCompile>
     <FxCompile Include="vertexShader3D.hlsl">
+      <Filter>ソース ファイル\HLSL\3D</Filter>
+    </FxCompile>
+    <FxCompile Include="pixelShader3D_NormalMap.hlsl">
+      <Filter>ソース ファイル\HLSL\3D</Filter>
+    </FxCompile>
+    <FxCompile Include="vertexShader3D_NormalMap.hlsl">
       <Filter>ソース ファイル\HLSL\3D</Filter>
     </FxCompile>
   </ItemGroup>

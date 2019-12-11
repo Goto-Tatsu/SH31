@@ -15,8 +15,6 @@
 //#include <assimp/postprocess.h>
 //#include <assimp/matrix4x4.h>
 
-
-
 void CModel::Draw()
 {
 

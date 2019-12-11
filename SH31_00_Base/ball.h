@@ -14,6 +14,7 @@ private:
 	XMVECTOR m_Quaternion;
 
 	CShader3D* m_pShader3D;
+	CCamera* m_pCamera;
 	XMMATRIX m_World;
 
 public:

@@ -30,11 +30,12 @@ public:
 	void Set();
 
 	
-	// void SetProjectionMatrix(XMFLOAT4X4* ProjectionMatrix) { m_Constant.ProjectionMatrix = Transpose(ProjectionMatrix); }
+	void GetCameraPos(XMFLOAT3 position) { m_Constant3D.cameraPos = XMFLOAT4(position.x, position.y, position.z, 1.0f); }
 
+	//void SetProjectionMatrix(XMFLOAT4X4* ProjectionMatrix) { m_Constant3DNormalMap.ProjectionMatrix = Transpose(ProjectionMatrix); }
+	void SetWorldTranspose(XMFLOAT4X4* mtxWorld) { m_Constant3D.mtxWorld = Transpose(mtxWorld); }
 	void SetWorldViewProjectionMatrix(XMFLOAT4X4* mtxWVP) { m_Constant3D.mtxWVP = Transpose(mtxWVP); };
 	void SetWorldInverseTranspose(XMFLOAT4X4* mtxWIT) { m_Constant3D.mtxWIP = Transpose(mtxWIT); };
-
 
 	XMFLOAT4X4 Transpose(XMFLOAT4X4* Matrix)
 	{

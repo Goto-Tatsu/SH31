@@ -19,8 +19,8 @@ void CCamera::Init()
 	moveLeftRight = 0.0f;
 	moveBackForward = 0.0f;
 
-	m_Position = XMFLOAT3(0.0f, 0.0f, -5.0f);
-	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_Position = XMFLOAT3(0.0f, 5.0f, -5.0f);
+	m_Rotation = XMFLOAT3(-5.0f, 0.0f, 0.0f);
 
 
 	m_Viewport.left = 0;
@@ -68,6 +68,23 @@ void CCamera::Update()
 	else if (CInput::GetKeyPress(VK_LEFT)) {
 		m_Rotation.y -= 0.01f;
 		//m_fCameraAngle -= 0.01f;
+	}
+	else if (CInput::GetKeyPress(VK_UP)) {
+		m_Rotation.x -= 0.01f;
+		//m_fCameraAngle -= 0.01f;
+	}
+	else if (CInput::GetKeyPress(VK_DOWN)) {
+		m_Rotation.x += 0.01f;
+		//m_fCameraAngle -= 0.01f;
+	}
+	
+
+	// è„è∏
+	if (CInput::GetKeyPress(VK_LSHIFT)) {
+		m_Position.y -= 0.5f;
+	}
+	else if(CInput::GetKeyPress(VK_RSHIFT)) {
+		m_Position.y += 0.5f;
 	}
 
 
