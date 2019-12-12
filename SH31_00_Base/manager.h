@@ -16,5 +16,4 @@ public:
 	static void Draw();
 
 	static CScene* GetScene() { return m_Scene; }
-
 };

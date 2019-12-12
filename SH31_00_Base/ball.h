@@ -18,7 +18,11 @@ private:
 	XMMATRIX m_World;
 
 public:
-	CBall() {};
+	CBall() {
+		m_Position = {};
+		m_Rotation = {};
+		m_Scale = {};
+	};
 	~CBall() {};
 
 	void Init(void);

@@ -29,7 +29,7 @@ float4 main(PS_IN input) : SV_TARGET
     float4 normalmap = Texture1.Sample(Sampler,input.texcoord) * 2.0f - 1.0f;
     
     // ここのxyzは目で見て+-調節してあげてください。
-    float3 normalW = normalize(-input.binormalW * normalmap.x + -input.tangentW * normalmap.y + input.normalW * normalmap.z);
+    float3 normalW = normalize(-input.binormalW * normalmap.x + input.tangentW * normalmap.y + input.normalW * normalmap.z);
     
 	float3 lightDirW = float3(1.0f, -1.0f, 1.0f);		/// 本当はレジスタ(CPU)から送ってあげてくれ
 

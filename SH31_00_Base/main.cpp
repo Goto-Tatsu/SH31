@@ -1,7 +1,9 @@
 
 
 #include "main.h"
+#include "imgui_manager.h"
 #include "manager.h"
+#include "renderer.h"
 
 
 const char* CLASS_NAME = "DX11AppClass";
@@ -63,7 +65,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	ShowWindow(g_Window, nCmdShow);
 	UpdateWindow(g_Window);
 
-
+	// imgui Initialize
+	ImguiManager::Init();
 
 	//フレームカウント初期化
 	DWORD dwExecLastTime;
@@ -122,8 +125,12 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 //=============================================================================
 // ウインドウプロシージャ
 //=============================================================================
+extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+	//	IMGUI用のウィンドウがあるか確認
+	if (ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))
+		return true;
 
 	switch(uMsg)
 	{

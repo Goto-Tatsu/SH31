@@ -25,6 +25,7 @@ void CManager::Init()
 
 void CManager::Uninit()
 {
+	ImguiManager::Uninit();
 
 	m_Scene->Uninit();
 	delete m_Scene;
@@ -41,6 +42,8 @@ void CManager::Update()
 
 	m_Scene->Update();
 
+	ImguiManager::Set();
+
 }
 
 void CManager::Draw()
@@ -49,6 +52,8 @@ void CManager::Draw()
 	CRenderer::Begin();
 
 	m_Scene->Draw();
+
+	ImguiManager::Draw();
 
 	CRenderer::End();
 

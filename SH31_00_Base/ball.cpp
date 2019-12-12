@@ -16,7 +16,7 @@
 #define SPEED	(0.05f)
 #define ANGLE	(0.02f)
 
-void CBall::Init()
+void CBall::Init(void)
 {
 	// シェーダーセット
 	m_pShader3D = new CShader3D();

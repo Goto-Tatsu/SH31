@@ -12,8 +12,8 @@ private:
 	ID3D11Buffer*	m_IndexBuffer = NULL;
 	
 
-	static const int FIELD_X = 50;
-	static const int FIELD_Z = 50;
+	static const int FIELD_X = 32;
+	static const int FIELD_Z = 32;
 
 	VERTEX_3D_NORMALMAP m_Vertex[FIELD_X * FIELD_Z];
 
