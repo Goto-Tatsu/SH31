@@ -34,6 +34,8 @@ public:
 	void Update();
 	void Draw();
 
+	void InitB();
+
 	XMMATRIX GetWorldMatrix() { return m_World; };
 	
 };
