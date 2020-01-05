@@ -14,12 +14,17 @@
 
 #include "scene.h"
 
+#define FILENAME_BASECOLOR	("data/TEXTURE/field004.tga")
+#define FILENAME_NORMALMAP	("data/TEXTURE/NormalMap.tga")
+//#define	FILENAME_HEIGHTMAP	()
+//#define FILENAME_METALIC	()
+
+static float g_rot = 0.0f;
 
 void CField::Init()
 {
 	m_pShader3D_Normalmap = new CShader3D_NormalMap();
 	m_pShader3D_Normalmap->Init("vertexShader3D_NormalMap.cso", "pixelShader3D_NormalMap.cso");
-	
 
 	for (int z = 0; z < FIELD_Z; z++)
 	{
@@ -80,7 +85,6 @@ void CField::Init()
 		CRenderer::GetDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
 	}
 
-
 	unsigned short index[(FIELD_X * 2 + 2) * (FIELD_Z - 1) - 2];
 
 	unsigned short i = 0;
@@ -103,7 +107,6 @@ void CField::Init()
 		i++;
 	}
 
-
 	{
 		D3D11_BUFFER_DESC bd;
 		ZeroMemory(&bd, sizeof(bd));
@@ -122,22 +125,17 @@ void CField::Init()
 	for (int i = 0; i < TEXTURE_MAX; i++) {
 		m_pTexture[i] = new CTexture();
 	}
-	m_pTexture[0]->Load("data/TEXTURE/field004.tga");
-	m_pTexture[1]->Load("data/TEXTURE/wave.tga");
+	m_pTexture[0]->Load(FILENAME_BASECOLOR);
+	m_pTexture[1]->Load(FILENAME_NORMALMAP);
 	//m_pTexture[2]->Load("data/TEXTURE/Rock_Displacement.tga");
 
 	m_Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
-
-	
-
 }
-
 
 void CField::Uninit()
 {
-
 	m_VertexBuffer->Release();
 
 	for (int i = 0; i < TEXTURE_MAX; i++) {
@@ -147,15 +145,11 @@ void CField::Uninit()
 
 	m_pShader3D_Normalmap->Uninit();
 	delete m_pShader3D_Normalmap;
-
 }
-
 
 void CField::Update()
 {
-	
 }
-
 
 void CField::Draw()
 {
@@ -178,13 +172,11 @@ void CField::Draw()
 	// インデックスバッファ設定
 	CRenderer::GetDeviceContext()->IASetIndexBuffer(m_IndexBuffer, DXGI_FORMAT_R16_UINT, 0);
 
-
 	// テクスチャ設定
 	CTexture* pTexture[] = { m_pTexture[0] , m_pTexture[1] };
 	//CRenderer::SetTexture(2, pTexture);
 	CRenderer::SetTexture(0, m_pTexture[0]);
 	CRenderer::SetTexture(1, m_pTexture[1]);
-	//CRenderer::SetTexture(2, m_pTexture[2]);
 
 	// マトリクス設定
 	m_World = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
@@ -192,50 +184,56 @@ void CField::Draw()
 	m_World *= XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
 	CRenderer::SetWorldMatrix(&m_World);
 
-	// 
-	m_pCamera = CManager::GetScene()->GetGameObject<CCamera>(LAYER_CAMERA);
-	XMMATRIX world, view, proj, WVP;
-	world = m_World;			// Tranpose済み
-	view = m_pCamera->GetViewMatrix();			// Tranposeしてない！
-	proj = m_pCamera->GetProjectionMatrix();	// Tranposeしてない！
-	WVP = world * view * proj;
-	XMFLOAT4X4 mtxWVP;
-	DirectX::XMStoreFloat4x4(&mtxWVP, WVP);
-	m_pShader3D_Normalmap->SetWorldViewProjectionMatrix(&mtxWVP);
+	{
+		// 自身のワールド行列と、カメラのview,projection行列
+		m_pCamera = CManager::GetScene()->GetGameObject<CCamera>(LAYER_CAMERA);
+		XMMATRIX mtxWorld, mtxView, mtxProj, mtxWVP;
+		mtxWorld = m_World;							// Tranpose済み
+		mtxView = m_pCamera->GetViewMatrix();		// Tranposeしてない！
+		mtxProj = m_pCamera->GetProjectionMatrix();	// Tranposeしてない！
 
-	//////////////////////////////////////////////////////
-// ワールド変換行列逆行列
-	XMMATRIX mtxWIT;
-	mtxWIT = XMMatrixInverse(nullptr, world);	// 逆行列
-	mtxWIT = XMMatrixTranspose(mtxWIT);			// 転置
-	XMFLOAT4X4 witf;
-	DirectX::XMStoreFloat4x4(&witf, mtxWIT);
-	m_pShader3D_Normalmap->SetWorldInverseTranspose(&witf);
-	// このあとシェーダーレジスターにセットスル。
-	///////////////////////////////////////////////////////
+		// WVPをそれぞれ渡してあげる、逆行列
+		//XMFLOAT4X4 world, view, proj;
+		//DirectX::XMStoreFloat4x4(&world, mtxWorld);
+		//DirectX::XMStoreFloat4x4(&view, mtxWorld);
+		//DirectX::XMStoreFloat4x4(&world, mtxWorld);
+		//m_pShader3D_Normalmap->SetWorldViewProjectionMatrix(&world, &view, &proj);
 
-	XMFLOAT4X4 mtxWorld;
-	DirectX::XMStoreFloat4x4(&mtxWorld, world);
-	m_pShader3D_Normalmap->SetWorldTranspose(&mtxWorld);
-	m_pShader3D_Normalmap->GetCameraPos(m_pCamera->GetPosition());
+		mtxWVP = mtxWorld * mtxView * mtxProj;
+		XMFLOAT4X4 WVP;
+		DirectX::XMStoreFloat4x4(&WVP, mtxWVP);
+		m_pShader3D_Normalmap->SetWorldViewProjectionMatrix(&WVP);
 
-	m_pShader3D_Normalmap->Set();
+		/////////////////////////////////////////////////
+		// ワールド変換行列逆行列
+		XMMATRIX mtxWIT;
+		mtxWIT = XMMatrixInverse(nullptr, mtxWorld);	// 逆行列
+		mtxWIT = XMMatrixTranspose(mtxWIT);				// 転置
+		XMFLOAT4X4 witf;
+		DirectX::XMStoreFloat4x4(&witf, mtxWIT);
+		m_pShader3D_Normalmap->SetWorldInverseTranspose(&witf);
+		// このあとシェーダーレジスターにセットスル。
+		///////////////////////////////////////////////////////
+
+		XMFLOAT4X4 World;
+		DirectX::XMStoreFloat4x4(&World, mtxWorld);
+		m_pShader3D_Normalmap->SetWorldTranspose(&World);
+		m_pShader3D_Normalmap->GetCameraPos(m_pCamera->GetPosition());
+
+		m_pShader3D_Normalmap->Set();
+	}
 
 	// プリミティブトポロジ設定
 	CRenderer::GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-
 	// ポリゴン描画
 	CRenderer::GetDeviceContext()->DrawIndexed(((FIELD_X * 2 + 2) * (FIELD_Z - 1) - 2), 0, 0);
-
-	
 }
 
 void CField::InitB()
 {
 	m_pShader3D_Normalmap = new CShader3D_NormalMap();
 	m_pShader3D_Normalmap->Init("vertexShader3D_NormalMap.cso", "pixelShader3D_NormalMap.cso");
-
 
 	for (int z = 0; z < FIELD_Z; z++)
 	{
@@ -296,7 +294,6 @@ void CField::InitB()
 		CRenderer::GetDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
 	}
 
-
 	unsigned short index[(FIELD_X * 2 + 2) * (FIELD_Z - 1) - 2];
 
 	unsigned short i = 0;
@@ -319,7 +316,6 @@ void CField::InitB()
 		i++;
 	}
 
-
 	{
 		D3D11_BUFFER_DESC bd;
 		ZeroMemory(&bd, sizeof(bd));
@@ -338,16 +334,11 @@ void CField::InitB()
 	for (int i = 0; i < TEXTURE_MAX; i++) {
 		m_pTexture[i] = new CTexture();
 	}
-	m_pTexture[0]->Load("data/TEXTURE/field004.tga");
-	m_pTexture[1]->Load("data/TEXTURE/wave.tga");
+	m_pTexture[0]->Load(FILENAME_BASECOLOR);
+	m_pTexture[1]->Load(FILENAME_NORMALMAP);
 	//m_pTexture[2]->Load("data/TEXTURE/Rock_Displacement.tga");
 
 	m_Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
-
-
-
 }
-
-

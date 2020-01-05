@@ -128,7 +128,10 @@ public:
 	static void SetLight(LIGHT Light);
 	static void SetVertexBuffers(ID3D11Buffer* VertexBuffer);
 	static void SetIndexBuffer(ID3D11Buffer* IndexBuffer);
+
 	static void SetTexture(CTexture* Texture);
+
+	
 	static void SetTexture(UINT slot, CTexture* Texture);
 	static void SetTexture(UINT numTexture, CTexture** Texture);
 	static void SetTexture(UINT slot, CTexture** Texture, UINT numTextures);

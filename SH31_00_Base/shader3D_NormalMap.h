@@ -11,32 +11,47 @@ struct CONSTANT3D_NormalMap
 	XMFLOAT4 cameraPos;
 };
 
+struct CONSTANT3D_NormalMap_WVP
+{
+	XMFLOAT4X4 world;
+	XMFLOAT4X4 view;
+	XMFLOAT4X4 projection;
+	XMFLOAT4 camPos;
+};
+
 class CShader3D_NormalMap
 {
 private:
 	ID3D11VertexShader* m_VertexShader;
-	ID3D11PixelShader*	m_PixelShader;
-	ID3D11InputLayout*	m_VertexLayout;
+	ID3D11PixelShader* m_PixelShader;
+	ID3D11InputLayout* m_VertexLayout;
 
-	ID3D11Buffer*			m_ConstantBuffer;
+	ID3D11Buffer* m_ConstantBuffer;
 	CONSTANT3D_NormalMap	m_Constant3DNormalMap;
+	CONSTANT3D_NormalMap_WVP m_Constant3D_WVP;
 
-	CCamera*	m_pCamera;
-	CField*		m_pField;
+	CCamera* m_pCamera;
+	CField* m_pField;
 
 public:
 	void Init(const char* VertexShader, const char* PixelShader);
 	void Uninit();
 	void Set();
-	void Set(XMMATRIX world);
 
 	void GetCameraPos(XMFLOAT3 position) { m_Constant3DNormalMap.cameraPos = XMFLOAT4(position.x, position.y, position.z, 1.0f); }
 
 	//void SetProjectionMatrix(XMFLOAT4X4* ProjectionMatrix) { m_Constant3DNormalMap.ProjectionMatrix = Transpose(ProjectionMatrix); }
 	void SetWorldTranspose(XMFLOAT4X4* mtxWorld) { m_Constant3DNormalMap.mtxWorld = Transpose(mtxWorld); }
+
+	void SetWorldViewProjectionMatrix(XMFLOAT4X4* world, XMFLOAT4X4* view, XMFLOAT4X4* projection) {
+		m_Constant3D_WVP.world = Transpose(world);
+		m_Constant3D_WVP.view = Transpose(view);
+		m_Constant3D_WVP.projection = Transpose(projection);
+	};
+
+
 	void SetWorldViewProjectionMatrix(XMFLOAT4X4* mtxWVP) { m_Constant3DNormalMap.mtxWVP = Transpose(mtxWVP); };
 	void SetWorldInverseTranspose(XMFLOAT4X4* mtxWIT) { m_Constant3DNormalMap.mtxWIP = Transpose(mtxWIT); };
-
 
 	XMFLOAT4X4 Transpose(XMFLOAT4X4* Matrix)
 	{
@@ -64,5 +79,4 @@ public:
 
 		return outMatrix;
 	}
-
 };

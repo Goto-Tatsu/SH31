@@ -40,7 +40,6 @@ void CPolygon::Init()
 	vertex[3].Color = XMFLOAT4(0.8f, 0.2f, 1.0f, 1.0f);
 	vertex[3].TexCoord = XMFLOAT2(1.0f, 1.0f);
 
-
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(bd));
 	bd.Usage = D3D11_USAGE_DEFAULT;
@@ -54,14 +53,12 @@ void CPolygon::Init()
 
 	CRenderer::GetDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
 
-
 	m_Shader = new CShader();
 	m_Shader->Init("vertexShader2D.cso", "pixelShader2D.cso");
 
 	m_Texture = new CTexture();
 	m_Texture->Load("data/TEXTURE/cocoon.tga");
 }
-
 
 void CPolygon::Uninit()
 {
@@ -74,13 +71,11 @@ void CPolygon::Uninit()
 	m_VertexBuffer->Release();
 }
 
-
 void CPolygon::Update()
 {
 	//m_Shader->SetValue((sin(m_Value) + 1.0f) * 0.5f);
 	//m_Value += 0.02f;
 }
-
 
 void CPolygon::Draw()
 {
@@ -106,5 +101,4 @@ void CPolygon::Draw()
 
 	// ƒ|ƒŠƒSƒ“•`‰æ
 	CRenderer::GetDeviceContext()->Draw(4, 0);
-
 }

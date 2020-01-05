@@ -28,7 +28,7 @@ float4 main(PS_IN input) : SV_TARGET
 	//float light = dot(-normalize(lightDir), input.normalW);
 	//light = saturate(light);
 
-    // ハーフランバート
+	// ハーフランバート
 	float light = (dot(-normalize(lightDir), input.normalW) + 1.0f) * 0.5f;
 	/////////////////////////////////////////////////
 
@@ -43,7 +43,7 @@ float4 main(PS_IN input) : SV_TARGET
 	s = pow(s, 10);
 	float4 specular = float4(s, s, s, 1.0f);
 
-    return float4(g_Texture.Sample(g_Sampler, input.texcoord).rgb * light + specular.rgb, 1.0f) + specular;
+	return float4(g_Texture.Sample(g_Sampler, input.texcoord).rgb * light + specular.rgb, 1.0f) + specular;
 	//return g_Texture.Sample(g_Sampler, input.texcoord) * light + specular;
 	//return float4(1.0f, 1.0f, 1.0f, 1.0f);
 }

@@ -1,4 +1,3 @@
-
 #include "main.h"
 #include "renderer.h"
 #include "texture.h"
@@ -12,8 +11,6 @@ IDXGISwapChain* CRenderer::m_SwapChain = NULL;
 ID3D11RenderTargetView* CRenderer::m_RenderTargetView = NULL;
 ID3D11DepthStencilView* CRenderer::m_DepthStencilView = NULL;
 
-
-
 ID3D11VertexShader* CRenderer::m_VertexShader = NULL;
 ID3D11PixelShader* CRenderer::m_PixelShader = NULL;
 ID3D11InputLayout* CRenderer::m_VertexLayout = NULL;
@@ -23,22 +20,23 @@ ID3D11Buffer* CRenderer::m_ProjectionBuffer = NULL;
 ID3D11Buffer* CRenderer::m_MaterialBuffer = NULL;
 ID3D11Buffer* CRenderer::m_LightBuffer = NULL;
 
-
 ID3D11DepthStencilState* CRenderer::m_DepthStateEnable;
 ID3D11DepthStencilState* CRenderer::m_DepthStateDisable;
-
-
 
 void CRenderer::Init()
 {
 	HRESULT hr = S_OK;
+	RECT window;
+	GetWindowRect(GetWindow(), &window);
+	int width = window.right - window.left;
+	int height = window.bottom - window.top;
 
 	// デバイス、スワップチェーン、コンテキスト生成
 	DXGI_SWAP_CHAIN_DESC sd;
 	ZeroMemory(&sd, sizeof(sd));
 	sd.BufferCount = 1;
-	sd.BufferDesc.Width = SCREEN_WIDTH;
-	sd.BufferDesc.Height = SCREEN_HEIGHT;
+	sd.BufferDesc.Width = width;
+	sd.BufferDesc.Height = height;
 	sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	sd.BufferDesc.RefreshRate.Numerator = 60;
 	sd.BufferDesc.RefreshRate.Denominator = 1;
@@ -61,14 +59,11 @@ void CRenderer::Init()
 		&m_FeatureLevel,
 		&m_ImmediateContext);
 
-
 	// レンダーターゲットビュー生成、設定
 	ID3D11Texture2D* pBackBuffer = NULL;
-	m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)& pBackBuffer);
+	m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
 	m_D3DDevice->CreateRenderTargetView(pBackBuffer, NULL, &m_RenderTargetView);
 	pBackBuffer->Release();
-
-
 
 	//ステンシル用テクスチャー作成
 	ID3D11Texture2D* depthTexture = NULL;
@@ -94,9 +89,7 @@ void CRenderer::Init()
 	dsvd.Flags = 0;
 	m_D3DDevice->CreateDepthStencilView(depthTexture, &dsvd, &m_DepthStencilView);
 
-
 	m_ImmediateContext->OMSetRenderTargets(1, &m_RenderTargetView, m_DepthStencilView);
-
 
 	// ビューポート設定
 	D3D11_VIEWPORT vp;
@@ -107,8 +100,6 @@ void CRenderer::Init()
 	vp.TopLeftX = 0;
 	vp.TopLeftY = 0;
 	m_ImmediateContext->RSSetViewports(1, &vp);
-
-
 
 	// ラスタライザステート設定
 	D3D11_RASTERIZER_DESC rd;
@@ -122,9 +113,6 @@ void CRenderer::Init()
 	m_D3DDevice->CreateRasterizerState(&rd, &rs);
 
 	m_ImmediateContext->RSSetState(rs);
-
-
-
 
 	// ブレンドステート設定
 	D3D11_BLEND_DESC blendDesc;
@@ -145,8 +133,6 @@ void CRenderer::Init()
 	m_D3DDevice->CreateBlendState(&blendDesc, &blendState);
 	m_ImmediateContext->OMSetBlendState(blendState, blendFactor, 0xffffffff);
 
-
-
 	// 深度ステンシルステート設定
 	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
 	ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
@@ -162,9 +148,6 @@ void CRenderer::Init()
 	m_D3DDevice->CreateDepthStencilState(&depthStencilDesc, &m_DepthStateDisable);//深度無効ステート
 
 	m_ImmediateContext->OMSetDepthStencilState(m_DepthStateEnable, NULL);
-
-
-
 
 	// サンプラーステート設定
 	D3D11_SAMPLER_DESC samplerDesc;
@@ -184,9 +167,6 @@ void CRenderer::Init()
 
 	m_ImmediateContext->PSSetSamplers(0, 1, &samplerState);
 
-
-
-
 	// 頂点シェーダ生成
 	{
 		FILE* file;
@@ -199,7 +179,6 @@ void CRenderer::Init()
 		fclose(file);
 
 		m_D3DDevice->CreateVertexShader(buffer, fsize, NULL, &m_VertexShader);
-
 
 		// 入力レイアウト生成
 		D3D11_INPUT_ELEMENT_DESC layout[] =
@@ -220,8 +199,6 @@ void CRenderer::Init()
 		delete[] buffer;
 	}
 
-
-
 	// ピクセルシェーダ生成
 	{
 		FILE* file;
@@ -237,9 +214,6 @@ void CRenderer::Init()
 
 		delete[] buffer;
 	}
-
-
-
 
 	// 定数バッファ生成
 	D3D11_BUFFER_DESC hBufferDesc;
@@ -259,21 +233,15 @@ void CRenderer::Init()
 	m_D3DDevice->CreateBuffer(&hBufferDesc, NULL, &m_ProjectionBuffer);
 	m_ImmediateContext->VSSetConstantBuffers(2, 1, &m_ProjectionBuffer);
 
-
 	hBufferDesc.ByteWidth = sizeof(MATERIAL);
 
 	m_D3DDevice->CreateBuffer(&hBufferDesc, NULL, &m_MaterialBuffer);
 	m_ImmediateContext->VSSetConstantBuffers(3, 1, &m_MaterialBuffer);
 
-
 	hBufferDesc.ByteWidth = sizeof(LIGHT);
 
 	m_D3DDevice->CreateBuffer(&hBufferDesc, NULL, &m_LightBuffer);
 	m_ImmediateContext->VSSetConstantBuffers(4, 1, &m_LightBuffer);
-
-
-
-
 
 	// 入力レイアウト設定
 	m_ImmediateContext->IASetInputLayout(m_VertexLayout);
@@ -282,8 +250,6 @@ void CRenderer::Init()
 	m_ImmediateContext->VSSetShader(m_VertexShader, NULL, 0);
 	m_ImmediateContext->PSSetShader(m_PixelShader, NULL, 0);
 
-
-
 	// ライト初期化
 	LIGHT light;
 	light.Direction = XMFLOAT4(0.0f, -1.0f, 0.0f, 0.0f);
@@ -291,17 +257,13 @@ void CRenderer::Init()
 	light.Ambient = COLOR(0.1f, 0.1f, 0.1f, 1.0f);
 	SetLight(light);
 
-
 	// マテリアル初期化
 	MATERIAL material;
 	ZeroMemory(&material, sizeof(material));
 	material.Diffuse = COLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	material.Ambient = COLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	SetMaterial(material);
-
 }
-
-
 
 void CRenderer::Uninit()
 {
@@ -320,10 +282,7 @@ void CRenderer::Uninit()
 	if (m_SwapChain)			m_SwapChain->Release();
 	if (m_ImmediateContext)	m_ImmediateContext->Release();
 	if (m_D3DDevice)			m_D3DDevice->Release();
-
 }
-
-
 
 void CRenderer::Begin()
 {
@@ -331,18 +290,12 @@ void CRenderer::Begin()
 	float ClearColor[4] = { 0.f, 1.f, 0.f, 1.0f };
 	m_ImmediateContext->ClearRenderTargetView(m_RenderTargetView, ClearColor);
 	m_ImmediateContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
-
 }
-
-
 
 void CRenderer::End()
 {
 	m_SwapChain->Present(1, 0);
 }
-
-
-
 
 void CRenderer::SetDepthEnable(bool Enable)
 {
@@ -350,7 +303,6 @@ void CRenderer::SetDepthEnable(bool Enable)
 		m_ImmediateContext->OMSetDepthStencilState(m_DepthStateEnable, NULL);
 	else
 		m_ImmediateContext->OMSetDepthStencilState(m_DepthStateDisable, NULL);
-
 }
 
 void CRenderer::SetWorldViewProjection2D()
@@ -366,16 +318,13 @@ void CRenderer::SetWorldViewProjection2D()
 	XMMATRIX projection;
 	projection = XMMatrixOrthographicOffCenterLH(0.0f, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f, 0.0f, 1.0f);
 	m_ImmediateContext->UpdateSubresource(m_ProjectionBuffer, 0, NULL, &XMMatrixTranspose(projection), 0, 0);
-
 }
-
 
 void CRenderer::SetWorldMatrix(XMMATRIX* WorldMatrix)
 {
 	XMMATRIX world;
 	world = *WorldMatrix;
 	m_ImmediateContext->UpdateSubresource(m_WorldBuffer, 0, NULL, &XMMatrixTranspose(world), 0, 0);
-
 }
 
 void CRenderer::SetViewMatrix(XMMATRIX* ViewMatrix)
@@ -392,57 +341,39 @@ void CRenderer::SetProjectionMatrix(XMMATRIX* ProjectionMatrix)
 	m_ImmediateContext->UpdateSubresource(m_ProjectionBuffer, 0, NULL, &XMMatrixTranspose(projection), 0, 0);
 }
 
-
-
 void CRenderer::SetMaterial(MATERIAL Material)
 {
-
 	m_ImmediateContext->UpdateSubresource(m_MaterialBuffer, 0, NULL, &Material, 0, 0);
-
 }
 
 void CRenderer::SetLight(LIGHT Light)
 {
-
 	m_ImmediateContext->UpdateSubresource(m_LightBuffer, 0, NULL, &Light, 0, 0);
-
 }
-
 
 void CRenderer::SetVertexBuffers(ID3D11Buffer* VertexBuffer)
 {
-
 	UINT stride = sizeof(VERTEX_3D);
 	UINT offset = 0;
 	ID3D11Buffer* vb[1] = { VertexBuffer };
 	m_ImmediateContext->IASetVertexBuffers(0, 1, vb, &stride, &offset);
-
 }
-
-
 
 void CRenderer::SetIndexBuffer(ID3D11Buffer* IndexBuffer)
 {
-
 	m_ImmediateContext->IASetIndexBuffer(IndexBuffer, DXGI_FORMAT_R16_UINT, 0);
-
 }
-
 
 void CRenderer::SetTexture(CTexture* Texture)
 {
-
 	ID3D11ShaderResourceView* srv[1] = { Texture->GetShaderResourceView() };
 	m_ImmediateContext->PSSetShaderResources(0, 1, srv);
-
 }
 
 void CRenderer::SetTexture(UINT slot, CTexture* Texture)
 {
-
 	ID3D11ShaderResourceView* srv[1] = { Texture->GetShaderResourceView() };
 	m_ImmediateContext->PSSetShaderResources(slot, 1, srv);
-
 }
 
 void CRenderer::SetTexture(UINT numTextures, CTexture** Texture)
@@ -457,7 +388,7 @@ void CRenderer::SetTexture(UINT numTextures, CTexture** Texture)
 
 void CRenderer::SetTexture(UINT slot, CTexture** Texture, UINT numTextures)
 {
-	ID3D11ShaderResourceView** srv = new ID3D11ShaderResourceView*[numTextures];
+	ID3D11ShaderResourceView** srv = new ID3D11ShaderResourceView * [numTextures];
 	for (int i = 0; i < numTextures; i++) {
 		srv[i] = Texture[i]->GetShaderResourceView();
 	}
@@ -465,12 +396,8 @@ void CRenderer::SetTexture(UINT slot, CTexture** Texture, UINT numTextures)
 	delete[] srv;
 }
 
-
 void CRenderer::DrawIndexed(unsigned int IndexCount, unsigned int StartIndexLocation, int BaseVertexLocation)
 {
-
 	m_ImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	m_ImmediateContext->DrawIndexed(IndexCount, StartIndexLocation, BaseVertexLocation);
-
 }
-

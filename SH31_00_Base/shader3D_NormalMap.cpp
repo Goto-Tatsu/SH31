@@ -86,9 +86,6 @@ void CShader3D_NormalMap::Init(const char* VertexShader, const char* PixelShader
 	}
 }
 
-
-
-
 void CShader3D_NormalMap::Uninit()
 {
 	if (m_ConstantBuffer)	m_ConstantBuffer->Release();
@@ -97,9 +94,6 @@ void CShader3D_NormalMap::Uninit()
 	if (m_VertexShader)		m_VertexShader->Release();
 	if (m_PixelShader)		m_PixelShader->Release();
 }
-
-
-
 
 void CShader3D_NormalMap::Set()
 {
@@ -117,65 +111,7 @@ void CShader3D_NormalMap::Set()
 
 
 	// 定数バッファ設定
-	CRenderer::GetDeviceContext()->VSSetConstantBuffers(1, 1, &m_ConstantBuffer);
+	CRenderer::GetDeviceContext()->VSSetConstantBuffers(0, 1, &m_ConstantBuffer);
 
-	CRenderer::GetDeviceContext()->PSSetConstantBuffers(1, 1, &m_ConstantBuffer);
-}
-
-void CShader3D_NormalMap::Set(XMMATRIX object_world)
-{
-	/////////////////////////////////////////////////////////
-	m_pCamera = CManager::GetScene()->GetGameObject<CCamera>(LAYER_CAMERA);
-
-	XMMATRIX world, view, proj, WVP;
-	world = object_world;			// Tranpose済み
-	view = m_pCamera->GetViewMatrix();			// Tranposeしてない！
-	proj = m_pCamera->GetProjectionMatrix();	// Tranposeしてない！
-
-	WVP = world * view * proj;
-
-	XMFLOAT4X4 mtxWVP;
-	DirectX::XMStoreFloat4x4(&mtxWVP, WVP);
-	m_Constant3DNormalMap.mtxWVP = mtxWVP;
-	SetWorldViewProjectionMatrix(&mtxWVP);
-	////////////////////////////////////////////////////////
-
-
-	//////////////////////////////////////////////////////
-	// ワールド変換行列逆行列
-	XMMATRIX mtxWIT;
-	mtxWIT = XMMatrixInverse(nullptr, world);	// 逆行列
-	mtxWIT = XMMatrixTranspose(mtxWIT);			// 転置
-	XMFLOAT4X4 witf;
-	DirectX::XMStoreFloat4x4(&witf, mtxWIT);
-	m_Constant3DNormalMap.mtxWIP = witf;
-	SetWorldInverseTranspose(&witf);
-	// このあとシェーダーレジスターにセットスル。
-	///////////////////////////////////////////////////////
-
-
-	XMFLOAT4X4 mtxWorld;
-	DirectX::XMStoreFloat4x4(&mtxWorld, world);
-	m_Constant3DNormalMap.mtxWorld = mtxWorld;
-
-	m_Constant3DNormalMap.cameraPos = XMFLOAT4(m_pCamera->GetPosition().x, m_pCamera->GetPosition().y, m_pCamera->GetPosition().z, 1.0f);
-
-	// シェーダ設定
-	CRenderer::GetDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
-	CRenderer::GetDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
-
-
-	// 入力レイアウト設定
-	CRenderer::GetDeviceContext()->IASetInputLayout(m_VertexLayout);
-
-
-	// 定数バッファ更新
-	CRenderer::GetDeviceContext()->UpdateSubresource(m_ConstantBuffer, 0, NULL, &m_Constant3DNormalMap, 0, 0);
-
-
-	// 定数バッファ設定
-	CRenderer::GetDeviceContext()->VSSetConstantBuffers(1, 1, &m_ConstantBuffer);
-
-	CRenderer::GetDeviceContext()->PSSetConstantBuffers(1, 1, &m_ConstantBuffer);
-
+	CRenderer::GetDeviceContext()->PSSetConstantBuffers(0, 1, &m_ConstantBuffer);
 }

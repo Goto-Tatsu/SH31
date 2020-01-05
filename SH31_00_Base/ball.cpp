@@ -23,16 +23,14 @@ void CBall::Init(void)
 	m_pShader3D->Init("vertexShader3D.cso", "pixelShader3D.cso");
 
 	m_pModel = new CModel();
-	m_pModel->Load("data/MODEL/sphere.obj");
+	m_pModel->Load("data/MODEL/sphere_01.obj");
 
 	m_Position = XMFLOAT3(0.0f, 3.0f, 0.0f);
 	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
 
-
 	m_Quaternion = XMQuaternionIdentity();
 }
-
 
 void CBall::Uninit(void)
 {
@@ -42,7 +40,6 @@ void CBall::Uninit(void)
 	m_pShader3D->Uninit();
 	delete m_pShader3D;
 }
-
 
 void CBall::Update()
 {
@@ -78,7 +75,6 @@ void CBall::Update()
 		m_Quaternion = XMQuaternionMultiply(m_Quaternion, rotation);
 		m_Quaternion = XMQuaternionNormalize(m_Quaternion);
 		//m_Position.z += SPEED;
-
 	}
 	if (CInput::GetKeyPress('J'))
 	{
@@ -93,9 +89,7 @@ void CBall::Update()
 	}
 
 	m_pShader3D->Set();
-
 }
-
 
 void CBall::Draw()
 {
@@ -134,9 +128,6 @@ void CBall::Draw()
 
 	m_pShader3D->Set();
 
-
 	// ƒ‚ƒfƒ‹•`‰æ
 	m_pModel->Draw();
-
-
 }

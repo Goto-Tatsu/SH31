@@ -1,9 +1,18 @@
-cbuffer ConstantBuffer : register(b1)
+
+cbuffer ConstantBuffer : register(b0)
 {
     float4x4 mtxWVP;
     float4x4 mtxWIT;
-    float4x4 mtxWorld;
+    float4x4 world;
     float4 cameraPos;
+}
+
+cbuffer ConstantBuffer : register(b1)
+{
+    float4x4 World;
+    float4x4 View;
+    float4x4 Proj;
+    float4 camPos;
 }
 
 // tangentやbinormalは3Dモデリングのソフトによってざひょうけいがことなるので、
@@ -17,7 +26,8 @@ struct VS_IN
 	float2 texcoord     : TEXCOORD0;
 };
 
-struct VS_OUT {
+struct VS_OUT 
+{
 	float4 posH : SV_POSITION;
 	float3 posW : POSITION1;
     float3 binormalW : BINORMAL0;
@@ -26,11 +36,16 @@ struct VS_OUT {
 	float2 texcoord	: TEXCOORD0;
 };
 
+void WorldViewProjection()
+{
+    
+}
+
 void main(in VS_IN input, out VS_OUT output)
 {
 
 	output.posH = mul(input.posL, mtxWVP);
-    output.posW = mul(input.posL, mtxWorld).xyz;
+    output.posW = mul(input.posL, world).xyz;
     
     input.binormalL.w = 0.0f;
     output.binormalW = mul(input.binormalL, mtxWIT).xyz;
@@ -45,4 +60,6 @@ void main(in VS_IN input, out VS_OUT output)
     
 	// ライトカラー設定もCPUから送ってくるものだからね。
 	// alpha値のところは１入れといてあげてね、あんしん。
+    
+    
 }
