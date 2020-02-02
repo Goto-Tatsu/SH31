@@ -18,12 +18,6 @@ private:
 	XMMATRIX	m_InvViewMatrix;		// ビュー逆行列変換用格納行列
 	XMMATRIX	m_ProjectionMatrix;		// プロジェクション行列
 
-	float moveLeftRight;
-	float moveBackForward;
-
-	float camYaw;
-	float camPitch;
-
 public:
 	void Init();
 	void Uninit();

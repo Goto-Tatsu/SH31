@@ -41,15 +41,15 @@ void CCamera::Update()
 		m_Rotation.y += 0.01f;
 		//m_fCameraAngle += 0.01f;
 	}
-	else if (CInput::GetKeyPress(VK_LEFT)) {
+	if (CInput::GetKeyPress(VK_LEFT)) {
 		m_Rotation.y -= 0.01f;
 		//m_fCameraAngle -= 0.01f;
 	}
-	else if (CInput::GetKeyPress(VK_UP)) {
+	if (CInput::GetKeyPress(VK_UP)) {
 		m_Rotation.x -= 0.01f;
 		//m_fCameraAngle -= 0.01f;
 	}
-	else if (CInput::GetKeyPress(VK_DOWN)) {
+	if (CInput::GetKeyPress(VK_DOWN)) {
 		m_Rotation.x += 0.01f;
 		//m_fCameraAngle -= 0.01f;
 	}

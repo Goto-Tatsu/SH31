@@ -110,6 +110,12 @@
     <ClCompile Include="imgui\imgui_widgets.cpp">
       <Filter>imgui\original</Filter>
     </ClCompile>
+    <ClCompile Include="ball_toon.cpp">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClCompile>
+    <ClCompile Include="Toon.cpp">
+      <Filter>ソース ファイル\shader\3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="manager.h">
@@ -184,6 +190,12 @@
     <ClInclude Include="imgui\imconfig.h">
       <Filter>imgui\original</Filter>
     </ClInclude>
+    <ClInclude Include="ball_toon.h">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClInclude>
+    <ClInclude Include="Toon.h">
+      <Filter>ソース ファイル\shader\3D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
@@ -205,6 +217,12 @@
       <Filter>ソース ファイル\HLSL\3D</Filter>
     </FxCompile>
     <FxCompile Include="vertexShader3D_NormalMap.hlsl">
+      <Filter>ソース ファイル\HLSL\3D</Filter>
+    </FxCompile>
+    <FxCompile Include="PS_ToonMap.hlsl">
+      <Filter>ソース ファイル\HLSL\3D</Filter>
+    </FxCompile>
+    <FxCompile Include="VS_ToonMap.hlsl">
       <Filter>ソース ファイル\HLSL\3D</Filter>
     </FxCompile>
   </ItemGroup>
