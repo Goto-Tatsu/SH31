@@ -29,10 +29,10 @@ using namespace DirectX;
 
 /* ====== ASSIMP =================== */
 #pragma comment(lib, "assimp.lib")
-#include <assimp/cimport.h>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
-#include <assimp/matrix4x4.h>
+//#include <assimp/cimport.h>
+//#include <assimp/scene.h>
+//#include <assimp/postprocess.h>
+//#include <assimp/matrix4x4.h>
 /* ================================ */
 
 /* ======== ORIGINAL ============= */
