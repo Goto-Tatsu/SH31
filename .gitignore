@@ -6,3 +6,4 @@ SH31_00_Base/packages.config
 SH31_00_Base/Release/
 SH31_00_Base/Assimp/
 SH31_00_Base/data/
+SH31_00_Base/pixelShader3D_NormalMap.cso
