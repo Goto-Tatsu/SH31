@@ -1,9 +1,11 @@
 #pragma once
 
 class CModel;
-class CShader3D;
+class CShader3D_Toon;
 
-class CBall :public CGameObject
+#define TEXTURE_MAX	(2)
+
+class CBallToon :public CGameObject
 {
 private:
 	XMFLOAT3 m_Position;
@@ -13,18 +15,18 @@ private:
 	CModel* m_pModel;
 	XMVECTOR m_Quaternion;
 
-	CTexture* m_pTexture;
-	CShader3D* m_pShader3D;
+	CTexture* m_pTexture[TEXTURE_MAX];
+	CShader3D_Toon* m_pShader3D;
 	CCamera* m_pCamera;
 	XMMATRIX m_World;
 
 public:
-	CBall() {
+	CBallToon() {
 		m_Position = {};
 		m_Rotation = {};
 		m_Scale = {};
 	};
-	~CBall() {};
+	~CBallToon() {};
 
 	void Init(void);
 	void Uninit(void);

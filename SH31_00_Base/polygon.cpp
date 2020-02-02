@@ -1,11 +1,13 @@
 #include <math.h>
 #include "main.h"
+#include "input.h"
 #include "renderer.h"
 #include "shader.h"
 
 #include "game_object.h"
 #include "polygon.h"
 #include "texture.h"
+bool g_bHide = false;
 
 // 頂点構造体
 struct VERTEX_2D
@@ -25,17 +27,17 @@ void CPolygon::Init()
 	vertex[0].Color = XMFLOAT4(0.2f, 0.8f, 0.3f, 1.0f);
 	vertex[0].TexCoord = XMFLOAT2(0.0f, 0.0f);
 
-	vertex[1].Position = XMFLOAT3(100.0f, 0.0f, 0.0f);
+	vertex[1].Position = XMFLOAT3(400.0f, 0.0f, 0.0f);
 	vertex[1].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	vertex[1].Color = XMFLOAT4(0.4f, 0.6f, 0.5f, 1.0f);
 	vertex[1].TexCoord = XMFLOAT2(1.0f, 0.0f);
 
-	vertex[2].Position = XMFLOAT3(0.0f, 200.0f, 0.0f);
+	vertex[2].Position = XMFLOAT3(0.0f, 300.0f, 0.0f);
 	vertex[2].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);;
 	vertex[2].Color = XMFLOAT4(0.6f, 0.4f, 0.7f, 1.0f);
 	vertex[2].TexCoord = XMFLOAT2(0.0f, 1.0f);
 
-	vertex[3].Position = XMFLOAT3(100.0f, 200.0f, 0.0f);
+	vertex[3].Position = XMFLOAT3(400.0f, 300.0f, 0.0f);
 	vertex[3].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	vertex[3].Color = XMFLOAT4(0.8f, 0.2f, 1.0f, 1.0f);
 	vertex[3].TexCoord = XMFLOAT2(1.0f, 1.0f);
@@ -73,6 +75,14 @@ void CPolygon::Uninit()
 
 void CPolygon::Update()
 {
+	if (!g_bHide && CInput::GetKeyTrigger('Q')) {
+		g_bHide = true;
+	}
+	else if(g_bHide){
+		if (CInput::GetKeyTrigger('Q')) {
+			g_bHide = false;
+		}
+	}
 	//m_Shader->SetValue((sin(m_Value) + 1.0f) * 0.5f);
 	//m_Value += 0.02f;
 }
@@ -94,11 +104,14 @@ void CPolygon::Draw()
 	m_Shader->Set();
 
 	//-- テクスチャの設定 --//
-	CRenderer::SetTexture(m_Texture);
+	//CRenderer::SetTexture(m_Texture);
+	CRenderer::SetDepthTexture(0);
 
 	// プリミティブトポロジ設定
 	CRenderer::GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
 	// ポリゴン描画
-	CRenderer::GetDeviceContext()->Draw(4, 0);
+	if (g_bHide) {
+		CRenderer::GetDeviceContext()->Draw(4, 0);
+	}
 }

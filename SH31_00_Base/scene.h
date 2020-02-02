@@ -10,6 +10,7 @@
 #include "camera.h"
 #include "field.h"
 #include "ball.h"
+#include "ball_toon.h"
 
 enum LAYER
 {
@@ -42,6 +43,7 @@ public:
 		// 3DObjects
 		AddGameObject<CField>(LAYER_BG);
 		AddGameObject<CBall>(LAYER_3D);
+		AddGameObject<CBallToon>(LAYER_3D);
 
 		// Polygon
 		AddGameObject<CPolygon>(LAYER_2DPOLYGONS);

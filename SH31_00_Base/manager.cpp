@@ -43,14 +43,18 @@ void CManager::Update()
 	m_Scene->Update();
 
 	ImguiManager::Set();
-
 }
 
 void CManager::Draw()
 {
 
-	CRenderer::Begin();
+	CRenderer::BeginDepth();
+	// ここにライト方向からのレンダリング(Orthoでのレンダリング)
+	// (W, LV, orthoProjection)
+	m_Scene->Draw();
 
+	CRenderer::Begin();
+	// 上のレンダリングで使ったfarを使用してWVP
 	m_Scene->Draw();
 
 	ImguiManager::Draw();

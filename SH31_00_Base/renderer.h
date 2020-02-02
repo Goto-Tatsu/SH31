@@ -1,7 +1,6 @@
 #ifndef RENDERER_H_
 #define RENDERER_H_
 
-
 // 頂点構造体
 struct VERTEX_3D
 {
@@ -19,7 +18,6 @@ struct VERTEX_3D_NORMALMAP
 	XMFLOAT3 Normal;
 	XMFLOAT2 TexCoord;
 };
-
 
 // 色構造体
 struct COLOR
@@ -50,15 +48,12 @@ struct MATERIAL
 	float		Dummy[3];//16bit境界用
 };
 
-
-
 // マテリアル構造体
 struct DX11_MODEL_MATERIAL
 {
 	MATERIAL		Material;
 	class CTexture* Texture;
 };
-
 
 // 描画サブセット構造体
 struct DX11_SUBSET
@@ -75,11 +70,9 @@ struct LIGHT
 	COLOR		Ambient;
 };
 
-
 class CVertexBuffer;
 class CIndexBuffer;
 class CTexture;
-
 
 class CRenderer
 {
@@ -93,8 +86,6 @@ private:
 	static ID3D11RenderTargetView* m_RenderTargetView;
 	static ID3D11DepthStencilView* m_DepthStencilView;
 
-
-
 	static ID3D11VertexShader* m_VertexShader;
 	static ID3D11PixelShader* m_PixelShader;
 	static ID3D11InputLayout* m_VertexLayout;
@@ -104,6 +95,10 @@ private:
 	static ID3D11Buffer* m_MaterialBuffer;
 	static ID3D11Buffer* m_LightBuffer;
 
+	// 2020/01/28 render target class
+	static ID3D11DepthStencilView* m_LightDepthStencileView;
+	static ID3D11ShaderResourceView* m_LightDepthShaderResourceView;
+
 	/*
 		static XMMATRIX				m_WorldMatrix;
 		static XMMATRIX				m_ViewMatrix;
@@ -112,11 +107,11 @@ private:
 	static ID3D11DepthStencilState* m_DepthStateEnable;
 	static ID3D11DepthStencilState* m_DepthStateDisable;
 
-
 public:
 	static void Init();
 	static void Uninit();
 	static void Begin();
+	static void BeginDepth();
 	static void End();
 
 	static void SetDepthEnable(bool Enable);
@@ -131,17 +126,18 @@ public:
 
 	static void SetTexture(CTexture* Texture);
 
-	
+	/* Multi Textures */
 	static void SetTexture(UINT slot, CTexture* Texture);
 	static void SetTexture(UINT numTexture, CTexture** Texture);
 	static void SetTexture(UINT slot, CTexture** Texture, UINT numTextures);
+	/* ============== */
 	static void DrawIndexed(unsigned int IndexCount, unsigned int StartIndexLocation, int BaseVertexLocation);
 
 	static ID3D11Device* GetDevice(void) { return m_D3DDevice; }
 	static ID3D11DeviceContext* GetDeviceContext(void) { return m_ImmediateContext; }
 
-
+	// 2020.1.28
+	static void SetDepthTexture(unsigned int slot);
 };
-
 
 #endif // !RENDERER_H_

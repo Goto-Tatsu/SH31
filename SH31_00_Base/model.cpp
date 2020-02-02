@@ -8,12 +8,6 @@
 #include "model.h"
 #include "texture.h"
 
-// Assimp
-//#pragma comment(lib, "assimp.lib")
-//#include <assimp/cimport.h>
-//#include <assimp/scene.h>
-//#include <assimp/postprocess.h>
-//#include <assimp/matrix4x4.h>
 
 void CModel::Draw()
 {
@@ -27,10 +21,10 @@ void CModel::Draw()
 	for (unsigned short i = 0; i < m_SubsetNum; i++)
 	{
 		// マテリアル設定
-		CRenderer::SetMaterial(m_SubsetArray[i].Material.Material);
+		//CRenderer::SetMaterial(m_SubsetArray[i].Material.Material);
 
 		// テクスチャ設定
-		CRenderer::SetTexture(m_SubsetArray[i].Material.Texture);
+		//CRenderer::SetTexture(m_SubsetArray[i].Material.Texture);
 
 		// ポリゴン描画
 		CRenderer::DrawIndexed(m_SubsetArray[i].IndexNum, m_SubsetArray[i].StartIndex, 0);
@@ -113,7 +107,6 @@ void CModel::Unload()
 	m_IndexBuffer->Release();
 
 	delete[] m_SubsetArray;
-
 }
 
 

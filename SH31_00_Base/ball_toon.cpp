@@ -5,32 +5,38 @@
 #include "renderer.h"
 #include "input.h"
 
-#include "shader3D.h"
+#include "Toon.h"
 #include "game_object.h"
 #include "texture.h"
 #include "camera.h"
 #include "model.h"		// 前に"renderer.h"が必要
-#include "ball.h"
+#include "ball_toon.h"
 
 #include "scene.h"
 
-#define TEXTURE_ENV	("data/TEXTURE/earthenvmap.tga")
+#define TEXTURE_BASE	("data/TEXTURE/field004.tga")
+#define TEXTURE_TOON	("data/TEXTURE/toon.tga")
 #define SPEED	(0.05f)
 #define ANGLE	(0.02f)
 
-void CBall::Init(void)
+void CBallToon::Init(void)
 {
 	// シェーダーセット
-	m_pShader3D = new CShader3D();
-	m_pShader3D->Init("vertexShader3D.cso", "pixelShader3D.cso");
+	m_pShader3D = new CShader3D_Toon();
+	m_pShader3D->Init("VS_ToonMap.cso", "PS_ToonMap.cso");
 
 	m_pModel = new CModel();
 	m_pModel->Load("data/MODEL/torus.obj");
 
-	m_pTexture = new CTexture();
-	m_pTexture->Load(TEXTURE_ENV);
 
-	m_Position = XMFLOAT3(0.0f, 3.0f, 0.0f);
+	for (int i = 0; i < TEXTURE_MAX; i++) {
+		m_pTexture[i] = new CTexture();
+	}
+
+	m_pTexture[0]->Load(TEXTURE_BASE);
+	m_pTexture[1]->Load(TEXTURE_TOON);
+
+	m_Position = XMFLOAT3(0.0f, 3.0f, 10.0f);
 	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
 
@@ -40,10 +46,12 @@ void CBall::Init(void)
 
 }
 
-void CBall::Uninit(void)
+void CBallToon::Uninit(void)
 {
-	m_pTexture->Unload();
-	delete m_pTexture;
+	for (int i = 0; i < TEXTURE_MAX; i++) {
+		m_pTexture[i]->Unload();
+		delete m_pTexture[i];
+	}
 
 	m_pModel->Unload();
 	delete m_pModel;
@@ -52,7 +60,7 @@ void CBall::Uninit(void)
 	delete m_pShader3D;
 }
 
-void CBall::Update()
+void CBallToon::Update()
 {
 	if (CInput::GetKeyPress('K'))
 	{
@@ -63,7 +71,6 @@ void CBall::Update()
 		// 回転を更新してるのがMultiply
 		m_Quaternion = XMQuaternionMultiply(m_Quaternion, rotation);
 		m_Quaternion = XMQuaternionNormalize(m_Quaternion);
-		//m_Position.x += SPEED;
 	}
 	if (CInput::GetKeyPress('H'))
 	{
@@ -74,7 +81,6 @@ void CBall::Update()
 		// 回転を更新してるのがMultiply
 		m_Quaternion = XMQuaternionMultiply(m_Quaternion, rotation);
 		m_Quaternion = XMQuaternionNormalize(m_Quaternion);
-		//m_Position.x -= SPEED;
 	}
 	if (CInput::GetKeyPress('U'))
 	{
@@ -85,7 +91,6 @@ void CBall::Update()
 		// 回転を更新してるのがMultiply
 		m_Quaternion = XMQuaternionMultiply(m_Quaternion, rotation);
 		m_Quaternion = XMQuaternionNormalize(m_Quaternion);
-		//m_Position.z += SPEED;
 	}
 	if (CInput::GetKeyPress('J'))
 	{
@@ -96,17 +101,19 @@ void CBall::Update()
 		// 回転を更新してるのがMultiply
 		m_Quaternion = XMQuaternionMultiply(m_Quaternion, rotation);
 		m_Quaternion = XMQuaternionNormalize(m_Quaternion);
-		//m_Position.z -= SPEED;
 	}
+
+
 }
 
-void CBall::Draw()
+void CBallToon::Draw()
 {
 	// 更新内容を反映
 	m_World = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
 	m_World *= XMMatrixRotationQuaternion(m_Quaternion);
 	m_World *= XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
 	CRenderer::SetWorldMatrix(&m_World);
+
 
 	XMMATRIX world, view, proj, WVP;
 	world = m_World;
@@ -134,9 +141,22 @@ void CBall::Draw()
 	m_pShader3D->SetWorldTranspose(&mtxWorld);
 	m_pShader3D->GetCameraPos(m_pCamera->GetPosition());
 
-	m_pShader3D->Set();
+	{
+		float x, y, z;
+		x = m_pCamera->GetPosition().x;
+		y = m_pCamera->GetPosition().y;
+		z = m_pCamera->GetPosition().z;
 
+		ImGui::Begin("Check Camera Pos");
+		ImGui::Text("X:%f", x);
+		ImGui::Text("Y:%f", y);
+		ImGui::Text("Z:%f", z);
+		ImGui::End();
+	}
+
+	m_pShader3D->Set();
 	// モデル描画
-	CRenderer::SetTexture(m_pTexture);
+	CRenderer::SetTexture(0, m_pTexture[0]);
+	CRenderer::SetTexture(1, m_pTexture[1]);
 	m_pModel->Draw();
 }

@@ -1,26 +1,13 @@
-#include "main.h"
-#include "imgui_manager.h"
-#include "renderer.h"
-#include "input.h"
-#include "game_object.h"
 
 #include "camera.h"
 
-#define SPEED (0.01f)
+#define SPEED (0.05f)
 
 void CCamera::Init()
 {
 	m_fCameraAngle = 0.0f;
 
-	//m_DefaultForward = XMVectorSet(0.f, 0.f, 1.f, 0.f);
-	//m_DefaultRight = XMVectorSet(1.f, 0.f, 0.f, 0.f);
-	//m_CamForward = XMVectorSet(0.f, 0.f, 1.f, 0.f);
-	//m_CamRight = XMVectorSet(1.f, 0.f, 0.f, 0.f);
-
-	moveLeftRight = 0.0f;
-	moveBackForward = 0.0f;
-
-	m_Position = XMFLOAT3(0.0f, 1.0f, 0.0f);
+	m_Position = XMFLOAT3(0.0f, 5.0f, 0.0f);
 	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
 	m_Viewport.left = 0;
@@ -35,12 +22,6 @@ void CCamera::Uninit()
 
 void CCamera::Update()
 {
-	//camRotationMatrix = XMMatrixRotationRollPitchYaw(camPitch, camYaw, 0);
-	//camAt = XMVector3TransformCoord(DefaultForward, camRotationMatrix);
-	//
-	//XMMATRIX RotateTempMatrix;
-	//RotateTempMatrix = XMMatrixRotationY(camYaw);
-
 	// 移動
 	if (CInput::GetKeyPress('A')) {		// 左
 		m_Position.x -= SPEED;
@@ -102,18 +83,20 @@ void CCamera::Draw()
 	XMVECTOR det;
 	m_ViewMatrix = XMMatrixInverse(&det, m_InvViewMatrix);	// 逆行列
 
-	//CRenderer::SetViewMatrix(&m_ViewMatrix);	// ビュー行列を渡してあげる
-
 	// プロジェクションマトリクス設定
 	m_ProjectionMatrix = XMMatrixPerspectiveFovLH(1.0f, dxViewport.Width / dxViewport.Height, 1.0f, 1000.0f);
 
-	//CRenderer::SetProjectionMatrix(&m_ProjectionMatrix);
 
 	{
-		ImGui::Begin("Cam Rot");
-		ImGui::DragFloat("Cam RotX", &m_Rotation.x, SPEED);            // Edit 1 float using a slider from 0.0f to 1.0f
-		ImGui::DragFloat("Cam RotY", &m_Rotation.y, SPEED);            // Edit 1 float using a slider from 0.0f to 1.0f
-		ImGui::DragFloat("Cam RotZ", &m_Rotation.z, SPEED);            // Edit 1 float using a slider from 0.0f to 1.0f
+		float x, y, z;
+		x = m_Position.x;
+		y = m_Position.y;
+		z = m_Position.z;
+
+		ImGui::Begin("Check Camera Pos Parents");
+		ImGui::Text("X:%f", x);
+		ImGui::Text("Y:%f", y);
+		ImGui::Text("Z:%f", z);
 		ImGui::End();
 	}
 }

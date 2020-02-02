@@ -18,18 +18,10 @@ struct PS_IN
 
 cbuffer ConstantBuffer:register(b0)
 {
-	float4 mtxWVP;
-	float4 mtxWIT;
-	float4 mtxWorld;
+	float4x4 mtxWVP;
+	float4x4 mtxWIT;
+	float4x4 world;
 	float4 cameraPos;
-}
-
-cbuffer ConstantBuffer:register(b1)
-{
-	float4 World;
-	float4 View;
-	float4 Proj;
-	float4 camPos;
 }
 
 float4 main(PS_IN input) : SV_TARGET

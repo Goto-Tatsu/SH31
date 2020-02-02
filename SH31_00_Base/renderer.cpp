@@ -23,6 +23,9 @@ ID3D11Buffer* CRenderer::m_LightBuffer = NULL;
 ID3D11DepthStencilState* CRenderer::m_DepthStateEnable;
 ID3D11DepthStencilState* CRenderer::m_DepthStateDisable;
 
+ID3D11DepthStencilView* CRenderer::m_LightDepthStencileView = NULL;
+ID3D11ShaderResourceView* CRenderer::m_LightDepthShaderResourceView = NULL;
+
 void CRenderer::Init()
 {
 	HRESULT hr = S_OK;
@@ -65,31 +68,69 @@ void CRenderer::Init()
 	m_D3DDevice->CreateRenderTargetView(pBackBuffer, NULL, &m_RenderTargetView);
 	pBackBuffer->Release();
 
-	//ステンシル用テクスチャー作成
-	ID3D11Texture2D* depthTexture = NULL;
-	D3D11_TEXTURE2D_DESC td;
-	ZeroMemory(&td, sizeof(td));
-	td.Width = sd.BufferDesc.Width;
-	td.Height = sd.BufferDesc.Height;
-	td.MipLevels = 1;
-	td.ArraySize = 1;
-	td.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	td.SampleDesc = sd.SampleDesc;
-	td.Usage = D3D11_USAGE_DEFAULT;
-	td.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-	td.CPUAccessFlags = 0;
-	td.MiscFlags = 0;
-	m_D3DDevice->CreateTexture2D(&td, NULL, &depthTexture);
+	{
+		//ステンシル用テクスチャー作成
+		ID3D11Texture2D* depthTexture = NULL;
+		D3D11_TEXTURE2D_DESC td;
+		ZeroMemory(&td, sizeof(td));
+		td.Width = sd.BufferDesc.Width;
+		td.Height = sd.BufferDesc.Height;
+		td.MipLevels = 1;
+		td.ArraySize = 1;
+		td.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+		td.SampleDesc = sd.SampleDesc;
+		td.Usage = D3D11_USAGE_DEFAULT;
+		td.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+		td.CPUAccessFlags = 0;
+		td.MiscFlags = 0;
+		m_D3DDevice->CreateTexture2D(&td, NULL, &depthTexture);
 
-	//ステンシルターゲット作成
-	D3D11_DEPTH_STENCIL_VIEW_DESC dsvd;
-	ZeroMemory(&dsvd, sizeof(dsvd));
-	dsvd.Format = td.Format;
-	dsvd.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
-	dsvd.Flags = 0;
-	m_D3DDevice->CreateDepthStencilView(depthTexture, &dsvd, &m_DepthStencilView);
+		//ステンシルターゲット作成
+		D3D11_DEPTH_STENCIL_VIEW_DESC dsvd;
+		ZeroMemory(&dsvd, sizeof(dsvd));
+		dsvd.Format = td.Format;
+		dsvd.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+		dsvd.Flags = 0;
+		m_D3DDevice->CreateDepthStencilView(depthTexture, &dsvd, &m_DepthStencilView);
 
+	}
+
+	{
+		// =========2020.01.28 render target class ========
+		ID3D11Texture2D* lightDepthTexture = NULL;
+		D3D11_TEXTURE2D_DESC td;
+		ZeroMemory(&td, sizeof(td));
+		td.Width = sd.BufferDesc.Width;
+		td.Height = sd.BufferDesc.Height;
+		td.MipLevels = 1;
+		td.ArraySize = 1;
+		td.Format = DXGI_FORMAT_R32_TYPELESS;
+		td.SampleDesc = sd.SampleDesc;
+		td.Usage = D3D11_USAGE_DEFAULT;
+		td.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
+		td.CPUAccessFlags = 0;
+		td.MiscFlags = 0;
+		m_D3DDevice->CreateTexture2D(&td, NULL, &lightDepthTexture);
+
+		//ステンシルターゲット作成
+		D3D11_DEPTH_STENCIL_VIEW_DESC dsvd;
+		ZeroMemory(&dsvd, sizeof(dsvd));
+		dsvd.Format = DXGI_FORMAT_D32_FLOAT;
+		dsvd.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+		dsvd.Flags = 0;
+		m_D3DDevice->CreateDepthStencilView(lightDepthTexture, &dsvd, &m_LightDepthStencileView);
+
+		D3D11_SHADER_RESOURCE_VIEW_DESC SRVDesc;
+		ZeroMemory(&SRVDesc, sizeof(SRVDesc));
+		SRVDesc.Format = DXGI_FORMAT_R32_FLOAT;
+		SRVDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+		SRVDesc.Texture2D.MipLevels = 1;
+		m_D3DDevice->CreateShaderResourceView(lightDepthTexture, &SRVDesc, &m_LightDepthShaderResourceView);
+	}
 	m_ImmediateContext->OMSetRenderTargets(1, &m_RenderTargetView, m_DepthStencilView);
+
+	// ================================================
+
 
 	// ビューポート設定
 	D3D11_VIEWPORT vp;
@@ -288,8 +329,15 @@ void CRenderer::Begin()
 {
 	// バックバッファクリア
 	float ClearColor[4] = { 0.f, 1.f, 0.f, 1.0f };
+	m_ImmediateContext->OMSetRenderTargets(1, &m_RenderTargetView, m_DepthStencilView);
 	m_ImmediateContext->ClearRenderTargetView(m_RenderTargetView, ClearColor);
 	m_ImmediateContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+}
+
+void CRenderer::BeginDepth()
+{
+	m_ImmediateContext->OMSetRenderTargets(0, NULL, m_LightDepthStencileView);
+	m_ImmediateContext->ClearDepthStencilView(m_LightDepthStencileView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
 
 void CRenderer::End()
@@ -400,4 +448,10 @@ void CRenderer::DrawIndexed(unsigned int IndexCount, unsigned int StartIndexLoca
 {
 	m_ImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	m_ImmediateContext->DrawIndexed(IndexCount, StartIndexLocation, BaseVertexLocation);
+}
+
+void CRenderer::SetDepthTexture(unsigned int slot)
+{
+	ID3D11ShaderResourceView* srv[1] = { m_LightDepthShaderResourceView };
+	m_ImmediateContext->PSSetShaderResources(slot, 1, srv);
 }

@@ -1,11 +1,12 @@
-Texture2D g_Texture : register(t0);
-SamplerState g_Sampler : register(s0);
+Texture2D TextureEnv : register(t0);
+Texture2D TextureBase : register(t1);
+SamplerState Sampler : register(s0);
 
 cbuffer ConstantBuffer:register(b0)
 {
-	float4 mtxWVP;
-	float4 mtxWIT;
-	float4 mtxWorld;
+	float4x4 mtxWVP; // World,View,Projection
+	float4x4 mtxWIT; // WorldInverseTranspose
+	float4x4 world;
 	float4 cameraPos;
 }
 
@@ -29,21 +30,20 @@ float4 main(PS_IN input) : SV_TARGET
 	//light = saturate(light);
 
 	// ハーフランバート
-	float light = (dot(-normalize(lightDir), input.normalW) + 1.0f) * 0.5f;
+	//float light = (dot(-normalize(lightDir), input.normalW) + 1.0f) * 0.5f;
 	/////////////////////////////////////////////////
 
-	/* スペキュラー計算 */
-	float4 posWorld = mul(input.posW, mtxWorld);			// 物体のWorld座標
-	float3 refv = reflect(lightDir, input.normalW);	// ライトベクトル
-	float3 eyev = posWorld.xyz - cameraPos.xyz;			// 視線ベクトル
-	refv = normalize(refv);		// ノーマライズ
-	eyev = normalize(eyev);		// ノーマライズ
-	float s = dot(refv, eyev);	// スペキュラー設定
-	s = saturate(s);
-	s = pow(s, 10);
-	float4 specular = float4(s, s, s, 1.0f);
+	// 視線ベクトル
+	float3 toEyeW = cameraPos.xyz - input.posW; // 視線ベクトル
+	toEyeW = normalize(toEyeW); // ノーマライズ
 
-	return float4(g_Texture.Sample(g_Sampler, input.texcoord).rgb * light + specular.rgb, 1.0f) + specular;
-	//return g_Texture.Sample(g_Sampler, input.texcoord) * light + specular;
-	//return float4(1.0f, 1.0f, 1.0f, 1.0f);
+	// 反射ベクトル
+	float3 refW = reflect(toEyeW,input.normalW);
+	refW = normalize(refW);
+	
+	// 反射ベクトルからスフィアマップのどのUVが写りこんでいるか求める
+	// refW.xy * 球の半径 + UVを0に
+	float2 envTexcoord = refW.xy * 0.3f + 0.5f;	
+	return TextureEnv.Sample(Sampler, envTexcoord);
+	
 }

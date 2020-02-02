@@ -51,11 +51,9 @@ private:
 	void LoadMaterial(const char* FileName, MODEL_MATERIAL** MaterialArray, unsigned short* MaterialNum);
 
 public:
-	CModel() {
+	CModel() {};
 
-	}
 	void Draw();
-
 	void Load(const char* FileName);
 	void Unload();
 

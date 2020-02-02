@@ -1,9 +1,9 @@
 #pragma once
 
 class CCamera;	// View,Projection‚ð‚à‚ç‚¤
-class CField;	// World‚ð‚à‚ç‚¤
+class CBallToon;	// World‚ð‚à‚ç‚¤
 
-struct CONSTANT3D_NormalMap
+struct CONSTANT3D
 {
 	XMFLOAT4X4 mtxWVP;
 	XMFLOAT4X4 mtxWIP;
@@ -11,15 +11,7 @@ struct CONSTANT3D_NormalMap
 	XMFLOAT4 cameraPos;
 };
 
-struct CONSTANT3D_NormalMap_WVP
-{
-	XMFLOAT4X4 world;
-	XMFLOAT4X4 view;
-	XMFLOAT4X4 projection;
-	XMFLOAT4 camPos;
-};
-
-class CShader3D_NormalMap
+class CShader3D_Toon
 {
 private:
 	ID3D11VertexShader* m_VertexShader;
@@ -27,30 +19,22 @@ private:
 	ID3D11InputLayout* m_VertexLayout;
 
 	ID3D11Buffer* m_ConstantBuffer;
-	CONSTANT3D_NormalMap	m_Constant3DNormalMap;
-	CONSTANT3D_NormalMap_WVP m_Constant3D_WVP;
+	CONSTANT3D	m_Constant3D;
 
-	CCamera* m_pCamera;
-	CField* m_pField;
+	CCamera* m_Camera;
+	CBallToon* m_BallToon;
 
 public:
 	void Init(const char* VertexShader, const char* PixelShader);
 	void Uninit();
 	void Set();
 
-	void GetCameraPos(XMFLOAT3 position) { m_Constant3DNormalMap.cameraPos = XMFLOAT4(position.x, position.y, position.z, 1.0f); }
+	void GetCameraPos(XMFLOAT3 position) { m_Constant3D.cameraPos = XMFLOAT4(position.x, position.y, position.z, 1.0f); }
 
 	//void SetProjectionMatrix(XMFLOAT4X4* ProjectionMatrix) { m_Constant3DNormalMap.ProjectionMatrix = Transpose(ProjectionMatrix); }
-	void SetWorldTranspose(XMFLOAT4X4* mtxWorld) { m_Constant3DNormalMap.mtxWorld = Transpose(mtxWorld); }
-
-	void SetWorldViewProjectionMatrix(XMFLOAT4X4* world, XMFLOAT4X4* view, XMFLOAT4X4* projection) {
-		m_Constant3D_WVP.world = Transpose(world);
-		m_Constant3D_WVP.view = Transpose(view);
-		m_Constant3D_WVP.projection = Transpose(projection);
-	};
-
-	void SetWorldViewProjectionMatrix(XMFLOAT4X4* mtxWVP) { m_Constant3DNormalMap.mtxWVP = Transpose(mtxWVP); };
-	void SetWorldInverseTranspose(XMFLOAT4X4* mtxWIT) { m_Constant3DNormalMap.mtxWIP = Transpose(mtxWIT); };
+	void SetWorldTranspose(XMFLOAT4X4* mtxWorld) { m_Constant3D.mtxWorld = Transpose(mtxWorld); }
+	void SetWorldViewProjectionMatrix(XMFLOAT4X4* mtxWVP) { m_Constant3D.mtxWVP = Transpose(mtxWVP); };
+	void SetWorldInverseTranspose(XMFLOAT4X4* mtxWIT) { m_Constant3D.mtxWIP = Transpose(mtxWIT); };
 
 	XMFLOAT4X4 Transpose(XMFLOAT4X4* Matrix)
 	{
