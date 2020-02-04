@@ -5,10 +5,6 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="リソース ファイル">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="ソース ファイル\system">
       <UniqueIdentifier>{5dfae46b-ca7f-4549-b3f0-65354fc73a17}</UniqueIdentifier>
     </Filter>
@@ -47,6 +43,15 @@
     </Filter>
     <Filter Include="imgui\original">
       <UniqueIdentifier>{cdde36e2-1222-4666-acde-8130cf83280e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game_object\cube_map">
+      <UniqueIdentifier>{149e6892-0598-44ab-ab50-62b2b8a44be2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="改造中">
+      <UniqueIdentifier>{5c74d530-89bb-4905-bde6-f71c7a2f1496}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\HLSL\3D\wave">
+      <UniqueIdentifier>{904248b4-62f0-4448-9a10-9a7429516103}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -109,6 +114,12 @@
     </ClCompile>
     <ClCompile Include="imgui\imgui_widgets.cpp">
       <Filter>imgui\original</Filter>
+    </ClCompile>
+    <ClCompile Include="ball_toon.cpp">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClCompile>
+    <ClCompile Include="Toon.cpp">
+      <Filter>ソース ファイル\shader\3D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -184,6 +195,12 @@
     <ClInclude Include="imgui\imconfig.h">
       <Filter>imgui\original</Filter>
     </ClInclude>
+    <ClInclude Include="ball_toon.h">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClInclude>
+    <ClInclude Include="Toon.h">
+      <Filter>ソース ファイル\shader\3D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
@@ -205,6 +222,12 @@
       <Filter>ソース ファイル\HLSL\3D</Filter>
     </FxCompile>
     <FxCompile Include="vertexShader3D_NormalMap.hlsl">
+      <Filter>ソース ファイル\HLSL\3D</Filter>
+    </FxCompile>
+    <FxCompile Include="VS_ToonMap.hlsl">
+      <Filter>ソース ファイル\HLSL\3D</Filter>
+    </FxCompile>
+    <FxCompile Include="PS_ToonMap.hlsl">
       <Filter>ソース ファイル\HLSL\3D</Filter>
     </FxCompile>
   </ItemGroup>

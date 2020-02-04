@@ -5,6 +5,7 @@
 #include "texture.h"
 #include "shader3D_NormalMap.h"
 #include <io.h>
+#include <DirectXMath.h>
 
 #include "game_object.h"
 #include "model.h"
@@ -149,6 +150,7 @@ void CField::Uninit()
 
 void CField::Update()
 {
+	
 }
 
 void CField::Draw()
@@ -220,8 +222,24 @@ void CField::Draw()
 		m_pShader3D_Normalmap->SetWorldTranspose(&World);
 		m_pShader3D_Normalmap->GetCameraPos(m_pCamera->GetPosition());
 
+
+
 		m_pShader3D_Normalmap->Set();
 	}
+
+	{
+		float x, y, z;
+		x = m_pCamera->GetPosition().x;
+		y = m_pCamera->GetPosition().y;
+		z = m_pCamera->GetPosition().z;
+
+		ImGui::Begin("Check Camera Pos by Field");
+		ImGui::Text("X:%f", x);
+		ImGui::Text("Y:%f", y);
+		ImGui::Text("Z:%f", z);
+		ImGui::End();
+	}
+
 
 	// プリミティブトポロジ設定
 	CRenderer::GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);

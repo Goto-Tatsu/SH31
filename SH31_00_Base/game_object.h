@@ -42,3 +42,27 @@ public:
 	{
 	}
 };
+
+inline XMFLOAT4X4 MathMF(XMMATRIX& matrix) {
+	XMFLOAT4X4 value;
+	XMStoreFloat4x4(&value, matrix);
+	return value;
+}
+
+inline XMMATRIX MathFM(XMFLOAT4X4& float4x4) {
+	XMMATRIX matrix;
+	matrix = XMLoadFloat4x4(&float4x4);
+	return matrix;
+}
+
+inline XMVECTOR GMathFV(XMFLOAT3& val)
+{
+	return XMLoadFloat3(&val);
+}
+
+inline XMFLOAT3 GMathVF(XMVECTOR& vec)
+{
+	XMFLOAT3 val;
+	XMStoreFloat3(&val, vec);
+	return val;
+}

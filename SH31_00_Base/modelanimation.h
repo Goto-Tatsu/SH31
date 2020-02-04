@@ -1,5 +1,7 @@
 #pragma once
 
+#include <map>
+
 enum PLAYER_FBX_tag
 {
 	PLAYER_WALK,
