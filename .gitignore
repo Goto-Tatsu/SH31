@@ -5,3 +5,9 @@ SH31_00_Base/packages/
 SH31_00_Base/packages.config
 SH31_00_Base/Release/
 SH31_00_Base/Assimp/
+*.cso
+SH31_00_Base/asdx/
+SH31_00_Base/data/
+SH31_00_Base/DirectXTK/
+SH31_00_Base/imgui/
+SH31_00_Base/改造中/
