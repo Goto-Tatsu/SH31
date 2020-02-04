@@ -1,0 +1,275 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ソース ファイル\system">
+      <UniqueIdentifier>{5dfae46b-ca7f-4549-b3f0-65354fc73a17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game_object">
+      <UniqueIdentifier>{fc5aa915-5448-4317-987f-cb75edcc6f26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\resource">
+      <UniqueIdentifier>{ef664aa9-42d5-49b4-b0ae-7e58e47f3fdb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\shader">
+      <UniqueIdentifier>{7d1198a4-c05e-40c7-8017-ee785cb44189}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\scene">
+      <UniqueIdentifier>{85f63b20-7ac7-4c3d-9b80-359b46358035}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\HLSL">
+      <UniqueIdentifier>{ec3bf669-439d-4e0b-b540-daf4736696ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\HLSL\2D">
+      <UniqueIdentifier>{3f3f0503-5533-4906-b83f-738b595ef9f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\HLSL\3D">
+      <UniqueIdentifier>{86ac8d47-1573-423d-8ac4-b47270bb3bf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\shader\2D">
+      <UniqueIdentifier>{863b1d98-b946-4af4-964e-5abac0b3c744}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\shader\3D">
+      <UniqueIdentifier>{0802c326-ee8c-4d42-84d7-3a327d00f27a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="imgui">
+      <UniqueIdentifier>{81128a05-3797-4e78-b9ab-15df1a90ea1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="imgui\mysource">
+      <UniqueIdentifier>{99cad7b7-26f3-4029-a459-536fc3f65991}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="imgui\original">
+      <UniqueIdentifier>{cdde36e2-1222-4666-acde-8130cf83280e}</UniqueIdentifier>
+    </Filter>
+<<<<<<< HEAD
+    <Filter Include="ソース ファイル\game_object\cube_map">
+      <UniqueIdentifier>{149e6892-0598-44ab-ab50-62b2b8a44be2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="改造中">
+      <UniqueIdentifier>{5c74d530-89bb-4905-bde6-f71c7a2f1496}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\HLSL\3D\wave">
+      <UniqueIdentifier>{904248b4-62f0-4448-9a10-9a7429516103}</UniqueIdentifier>
+=======
+    <Filter Include="ソース ファイル\HLSL\3D\wave">
+      <UniqueIdentifier>{fae1ffe1-bc8a-4374-9a75-bde36d67a814}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\shader\3D\wave">
+      <UniqueIdentifier>{b89b6644-e529-4a86-9d81-e134e1910942}</UniqueIdentifier>
+>>>>>>> 42d051303290434984ab11fa7c7e66b4266506a8
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>ソース ファイル\system</Filter>
+    </ClCompile>
+    <ClCompile Include="manager.cpp">
+      <Filter>ソース ファイル\system</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer.cpp">
+      <Filter>ソース ファイル\system</Filter>
+    </ClCompile>
+    <ClCompile Include="texture.cpp">
+      <Filter>ソース ファイル\resource</Filter>
+    </ClCompile>
+    <ClCompile Include="polygon.cpp">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClCompile>
+    <ClCompile Include="input.cpp">
+      <Filter>ソース ファイル\system</Filter>
+    </ClCompile>
+    <ClCompile Include="camera.cpp">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClCompile>
+    <ClCompile Include="shader.cpp">
+      <Filter>ソース ファイル\shader\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="shader3D.cpp">
+      <Filter>ソース ファイル\shader\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="model.cpp">
+      <Filter>ソース ファイル\resource</Filter>
+    </ClCompile>
+    <ClCompile Include="ball.cpp">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClCompile>
+    <ClCompile Include="field.cpp">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClCompile>
+    <ClCompile Include="shader3D_NormalMap.cpp">
+      <Filter>ソース ファイル\shader\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_manager.cpp">
+      <Filter>imgui\mysource</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui.cpp">
+      <Filter>imgui\original</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_demo.cpp">
+      <Filter>imgui\original</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_draw.cpp">
+      <Filter>imgui\original</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_impl_dx11.cpp">
+      <Filter>imgui\original</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_impl_win32.cpp">
+      <Filter>imgui\original</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_widgets.cpp">
+      <Filter>imgui\original</Filter>
+    </ClCompile>
+    <ClCompile Include="ball_toon.cpp">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClCompile>
+    <ClCompile Include="Toon.cpp">
+      <Filter>ソース ファイル\shader\3D</Filter>
+    </ClCompile>
+<<<<<<< HEAD
+=======
+    <ClCompile Include="shader3D_wave.cpp">
+      <Filter>ソース ファイル\shader\3D\wave</Filter>
+    </ClCompile>
+>>>>>>> 42d051303290434984ab11fa7c7e66b4266506a8
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="manager.h">
+      <Filter>ソース ファイル\system</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer.h">
+      <Filter>ソース ファイル\system</Filter>
+    </ClInclude>
+    <ClInclude Include="texture.h">
+      <Filter>ソース ファイル\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="polygon.h">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClInclude>
+    <ClInclude Include="game_object.h">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClInclude>
+    <ClInclude Include="input.h">
+      <Filter>ソース ファイル\system</Filter>
+    </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClInclude>
+    <ClInclude Include="shader.h">
+      <Filter>ソース ファイル\shader\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="shader3D.h">
+      <Filter>ソース ファイル\shader\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="model.h">
+      <Filter>ソース ファイル\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="ball.h">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClInclude>
+    <ClInclude Include="field.h">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>ソース ファイル\system</Filter>
+    </ClInclude>
+    <ClInclude Include="shader3D_NormalMap.h">
+      <Filter>ソース ファイル\shader\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="scene.h">
+      <Filter>ソース ファイル\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_manager.h">
+      <Filter>imgui\mysource</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_truetype.h">
+      <Filter>imgui\original</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_textedit.h">
+      <Filter>imgui\original</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_rectpack.h">
+      <Filter>imgui\original</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_internal.h">
+      <Filter>imgui\original</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_win32.h">
+      <Filter>imgui\original</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_dx11.h">
+      <Filter>imgui\original</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui.h">
+      <Filter>imgui\original</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imconfig.h">
+      <Filter>imgui\original</Filter>
+    </ClInclude>
+    <ClInclude Include="ball_toon.h">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClInclude>
+    <ClInclude Include="Toon.h">
+      <Filter>ソース ファイル\shader\3D</Filter>
+    </ClInclude>
+<<<<<<< HEAD
+=======
+    <ClInclude Include="shader3D_wave.h">
+      <Filter>ソース ファイル\shader\3D\wave</Filter>
+    </ClInclude>
+>>>>>>> 42d051303290434984ab11fa7c7e66b4266506a8
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="pixelShader2D.hlsl">
+      <Filter>ソース ファイル\HLSL\2D</Filter>
+    </FxCompile>
+    <FxCompile Include="vertexShader2D.hlsl">
+      <Filter>ソース ファイル\HLSL\2D</Filter>
+    </FxCompile>
+    <FxCompile Include="pixelShader3D.hlsl">
+      <Filter>ソース ファイル\HLSL\3D</Filter>
+    </FxCompile>
+    <FxCompile Include="vertexShader3D.hlsl">
+      <Filter>ソース ファイル\HLSL\3D</Filter>
+    </FxCompile>
+    <FxCompile Include="pixelShader3D_NormalMap.hlsl">
+      <Filter>ソース ファイル\HLSL\3D</Filter>
+    </FxCompile>
+    <FxCompile Include="vertexShader3D_NormalMap.hlsl">
+      <Filter>ソース ファイル\HLSL\3D</Filter>
+    </FxCompile>
+<<<<<<< HEAD
+    <FxCompile Include="VS_ToonMap.hlsl">
+      <Filter>ソース ファイル\HLSL\3D</Filter>
+    </FxCompile>
+    <FxCompile Include="PS_ToonMap.hlsl">
+      <Filter>ソース ファイル\HLSL\3D</Filter>
+    </FxCompile>
+=======
+    <FxCompile Include="PS_ToonMap.hlsl">
+      <Filter>ソース ファイル\HLSL\3D</Filter>
+    </FxCompile>
+    <FxCompile Include="VS_ToonMap.hlsl">
+      <Filter>ソース ファイル\HLSL\3D</Filter>
+    </FxCompile>
+    <FxCompile Include="VS_Wave.hlsl">
+      <Filter>ソース ファイル\HLSL\3D\wave</Filter>
+    </FxCompile>
+    <FxCompile Include="PS_Wave.hlsl">
+      <Filter>ソース ファイル\HLSL\3D\wave</Filter>
+    </FxCompile>
+    <FxCompile Include="HS_Wave.hlsl">
+      <Filter>ソース ファイル\HLSL\3D\wave</Filter>
+    </FxCompile>
+    <FxCompile Include="DS_Wave.hlsl">
+      <Filter>ソース ファイル\HLSL\3D\wave</Filter>
+    </FxCompile>
+>>>>>>> 42d051303290434984ab11fa7c7e66b4266506a8
+  </ItemGroup>
+</Project>
