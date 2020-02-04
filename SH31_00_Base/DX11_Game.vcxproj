@@ -146,6 +146,7 @@
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="shader3D.cpp" />
     <ClCompile Include="shader3D_NormalMap.cpp" />
+    <ClCompile Include="shader3D_wave.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="polygon.cpp" />
     <ClCompile Include="Toon.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="shader.h" />
     <ClInclude Include="shader3D.h" />
     <ClInclude Include="shader3D_NormalMap.h" />
+    <ClInclude Include="shader3D_wave.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="polygon.h" />
     <ClInclude Include="Toon.h" />
@@ -182,6 +184,8 @@
     <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="DS_Wave.hlsl" />
+    <FxCompile Include="HS_Wave.hlsl" />
     <FxCompile Include="pixelShader2D.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
@@ -220,6 +224,7 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
     </FxCompile>
+    <FxCompile Include="PS_Wave.hlsl" />
     <FxCompile Include="vertexShader2D.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
@@ -258,6 +263,7 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
     </FxCompile>
+    <FxCompile Include="VS_Wave.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
