@@ -29,18 +29,18 @@ using namespace DirectX;
 
 /* ====== ASSIMP =================== */
 #pragma comment(lib, "assimp.lib")
-#include <assimp/cimport.h>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
-#include <assimp/matrix4x4.h>
+//#include <assimp/cimport.h>
+//#include <assimp/scene.h>
+//#include <assimp/postprocess.h>
+//#include <assimp/matrix4x4.h>
 /* ================================ */
 
 /* ======== ORIGINAL ============= */
 #include "imgui_manager.h"
 /* =============================== */
 
-#define SCREEN_WIDTH	(1024)			// ウインドウの幅
-#define SCREEN_HEIGHT	(576)			// ウインドウの高さ
+#define SCREEN_WIDTH	(1440)			// ウインドウの幅
+#define SCREEN_HEIGHT	(810)			// ウインドウの高さ
 
 // メモリリーク発生時にデバッガに出力する内容をわかりやすくする
 #if defined(DEBUG) || defined(_DEBUG)

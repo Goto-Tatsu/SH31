@@ -34,8 +34,8 @@ float4 main(PS_IN input) : SV_TARGET
 	input.normalW = normalize(input.normalW);
 
 	// 視線ベクトル
-	//float3 toEyeW = cameraPos.xyz - input.posW; // 視線ベクトル
-	float3 toEyeW = input.posW - cameraPos.xyz; // 視線ベクトル
+	float3 toEyeW = cameraPos.xyz - input.posW; // 視線ベクトル
+	//float3 toEyeW = input.posW - cameraPos.xyz; // 視線ベクトル
 	toEyeW = normalize(toEyeW); // ノーマライズ
 
 	
@@ -46,7 +46,7 @@ float4 main(PS_IN input) : SV_TARGET
 	light *= 0.99f;
 	
 	// 対抗率
-	float facing = dot(-toEyeW, input.normalW) * 0.99f;
+	float facing = dot(toEyeW, input.normalW) * 0.99f;
 	
 	// ﾃｸｽﾁｬ	
 	float2 toonTexcoord;

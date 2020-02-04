@@ -1,17 +1,14 @@
-
-
 #include "main.h"
 #include "imgui_manager.h"
 #include "manager.h"
 #include "renderer.h"
 
-
 const char* CLASS_NAME = "DX11AppClass";
 const char* WINDOW_NAME = "DX11";
 
+D3D11_FILL_MODE g_FillMode = D3D11_FILL_SOLID;
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-
 
 HWND g_Window;
 
@@ -19,7 +16,6 @@ HWND GetWindow()
 {
 	return g_Window;
 }
-
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -56,10 +52,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		hInstance,
 		NULL);
 
-
 	// 初期化処理(ウィンドウを作成してから行う)
 	CManager::Init();
-
 
 	// ウインドウの表示(初期化処理の後に行う)
 	ShowWindow(g_Window, nCmdShow);
@@ -75,14 +69,13 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	dwExecLastTime = timeGetTime();
 	dwCurrentTime = 0;
 
-
 	// メッセージループ
 	MSG msg;
-	while(1)
+	while (1)
 	{
-		if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
-			if(msg.message == WM_QUIT)
+			if (msg.message == WM_QUIT)
 			{// PostQuitMessage()が呼ばれたらループ終了
 				break;
 			}
@@ -97,7 +90,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		{
 			dwCurrentTime = timeGetTime();
 
-			if((dwCurrentTime - dwExecLastTime) >= (1000 / 60))
+			if ((dwCurrentTime - dwExecLastTime) >= (1000 / 60))
 			{
 				dwExecLastTime = dwCurrentTime;
 
@@ -121,7 +114,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	return (int)msg.wParam;
 }
 
-
 //=============================================================================
 // ウインドウプロシージャ
 //=============================================================================
@@ -132,14 +124,24 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	if (ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))
 		return true;
 
-	switch(uMsg)
+	switch (uMsg)
 	{
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
 
+	case WM_KEYUP:
+		if (wParam == 'M')
+		{
+			if (g_FillMode == D3D11_FILL_SOLID)
+				g_FillMode = D3D11_FILL_WIREFRAME;
+			else
+				g_FillMode = D3D11_FILL_SOLID;
+		}
+		break;
+
 	case WM_KEYDOWN:
-		switch(wParam)
+		switch (wParam)
 		{
 		case VK_ESCAPE:
 			DestroyWindow(hWnd);
@@ -153,4 +155,3 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 	return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
-

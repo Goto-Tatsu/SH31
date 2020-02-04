@@ -29,17 +29,13 @@ ID3D11ShaderResourceView* CRenderer::m_LightDepthShaderResourceView = NULL;
 void CRenderer::Init()
 {
 	HRESULT hr = S_OK;
-	RECT window;
-	GetWindowRect(GetWindow(), &window);
-	int width = window.right - window.left;
-	int height = window.bottom - window.top;
 
 	// デバイス、スワップチェーン、コンテキスト生成
 	DXGI_SWAP_CHAIN_DESC sd;
 	ZeroMemory(&sd, sizeof(sd));
 	sd.BufferCount = 1;
-	sd.BufferDesc.Width = width;
-	sd.BufferDesc.Height = height;
+	sd.BufferDesc.Width = SCREEN_WIDTH;
+	sd.BufferDesc.Height = SCREEN_HEIGHT;
 	sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	sd.BufferDesc.RefreshRate.Numerator = 60;
 	sd.BufferDesc.RefreshRate.Denominator = 1;
